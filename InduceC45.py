@@ -1,9 +1,8 @@
 import numpy as np
 import math
 
-def selectSplittingGain(attr, data, thresh):
+def selectSplitting(attr, data, thresh, ratio):
 	dEntropy = findEntropy(data)
-	print(dEntropy)
 	dSize2 = data.shape[0]
 	gain = []
 	#iterate through each attribute
@@ -13,7 +12,16 @@ def selectSplittingGain(attr, data, thresh):
 		for uniqueValue in np.unique(data[:, i]):
 			dataWithValue = data[data[:,i] == uniqueValue]
 			attrEntropy += len(dataWithValue)/dSize2*findEntropy(dataWithValue)
-		print(attrEntropy)
+		curGain = dEntropy - attrEntropy
+		if(ratio):
+			gain.append(curGain/attrEntropy)
+		else:
+			gain.append(curGain)
+	bestIndex = gain.index(max(gain)))
+	if(gain[bestIndex] > thresh):
+		return bestIndex
+	else:
+		return -1
 
 
 def findEntropy(data):
@@ -46,5 +54,5 @@ test = np.array([[3,"N","T","S","N"],
 				 [4,"N","T","N","N"],
 				 [4,"Y","O","N","N"]])
 attr = np.array(["1","2","3","4'"])
-selectSplittingGain(attr, test, .5)
+selectSplitting(attr, test, .5, 0)
 
