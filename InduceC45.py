@@ -33,6 +33,16 @@ def findEntropy(data):
 		lengthSplit = isC.shape[0]
 		entropy += (lengthSplit/dSize)*math.log(lengthSplit/dSize, 2)
 	return -entropy
+
+def findMostFrequent(data):
+	uniqueClassifiers = np.unique(data[:,-1])
+	countEach = {}
+	for item in uniqueClassifiers:
+		count = len(data[data[:,-1] == item])
+		countEach[item] = count
+	bestTuple = max(countEach.items(), key = lambda x: x[1])
+	return (bestTuple[0], bestTuple[1]/len(data))
+
 	
 
 
@@ -54,7 +64,20 @@ def main():
 					 [4,"N","T","N","N"],
 					 [4,"Y","O","N","N"]])
 	attr = np.array(["1","2","3","4'"])
+	classifiers = {"N": 1, "Y": 2}
+	Tree = []
+	if(len(np.unique(test[:,-1])) == 1):
+		Tree.append(Leaf(1, test[0,-1], 1))
+	elif(len(attr) == 0):
+		freq = findMostFrequent(test)
+		Tree.append(Leaf(classifiers[freq[0]], freq[0], freq[1]))
 	print(selectSplitting(attr, test, .1, 0))
+
+class Leaf:
+	def __init__(self, decision, label, p):
+		self.decision = decision
+		self.label = label
+		self.p = p
 
 if __name__ == "__main__":
 	main()
