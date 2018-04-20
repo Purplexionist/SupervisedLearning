@@ -17,7 +17,7 @@ def selectSplitting(attr, data, thresh, ratio):
 			gain.append(curGain/attrEntropy)
 		else:
 			gain.append(curGain)
-	bestIndex = gain.index(max(gain)))
+	bestIndex = gain.index(max(gain))
 	if(gain[bestIndex] > thresh):
 		return bestIndex
 	else:
@@ -36,23 +36,25 @@ def findEntropy(data):
 	
 
 
+def main():
+	test = np.array([[3,"N","T","S","N"],
+					 [3,"Y","T","S","Y"],
+					 [3,"Y","O","N","N"],
+					 [3,"Y","T","N","N"],
+					 [3,"N","O","N","N"],
+					 [3,"Y","T","S","Y"],
+					 [3,"Y","O","S","N"],
+					 [3,"N","T","S","N"],
+					 [4,"N","T","S","Y"],
+					 [4,"Y","O","N","N"],
+					 [4,"Y","O","S","Y"],
+					 [4,"N","T","N","N"],
+					 [4,"N","O","S","Y"],
+					 [4,"Y","O","S","Y"],
+					 [4,"N","T","N","N"],
+					 [4,"Y","O","N","N"]])
+	attr = np.array(["1","2","3","4'"])
+	print(selectSplitting(attr, test, .1, 0))
 
-test = np.array([[3,"N","T","S","N"],
-				 [3,"Y","T","S","Y"],
-				 [3,"Y","O","N","N"],
-				 [3,"Y","T","N","N"],
-				 [3,"N","O","N","N"],
-				 [3,"Y","T","S","Y"],
-				 [3,"Y","O","S","N"],
-				 [3,"N","T","S","N"],
-				 [4,"N","T","S","Y"],
-				 [4,"Y","O","N","N"],
-				 [4,"Y","O","S","Y"],
-				 [4,"N","T","N","N"],
-				 [4,"N","O","S","Y"],
-				 [4,"Y","O","S","Y"],
-				 [4,"N","T","N","N"],
-				 [4,"Y","O","N","N"]])
-attr = np.array(["1","2","3","4'"])
-selectSplitting(attr, test, .5, 0)
-
+if __name__ == "__main__":
+	main()
