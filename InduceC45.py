@@ -25,7 +25,6 @@ def selectSplitting(attr, data, thresh, ratio):
 	else:
 		return -1
 
-
 def findEntropy(data):
 	uniqueClassifier = np.unique(data[:,-1])
 	entropy = 0
@@ -80,6 +79,13 @@ class Leaf:
 		self.decision = decision
 		self.label = label
 		self.p = p
+
+class Node:
+	def __init__(self, attName, data):
+		self.edges = []
+		self.attName = attName
+		self.data = data
+		
 
 if __name__ == "__main__":
 	main()
