@@ -47,18 +47,23 @@ def findMostFrequent(data):
 	
 def C45(test, attr, RootNode, classifiers):
 	if(len(np.unique(test[:,-1])) == 1):
+		print(classifiers[test[0,-1]])
 		RootNode.leaf = Leaf(classifiers[test[0,-1]], test[0,-1], 1)
 	elif(len(attr) == 0):
 		freq = findMostFrequent(test)
+		print(classifiers[test[0,-1]])
 		RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
 	else:
 		splitNum = selectSplitting(attr, test, .1, 0)
 		if(splitNum == -1):
 			freq = findMostFrequent(test)
+			print(classifiers[test[0,-1]])
 			RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
 		else:
 			RootNode.attName = attr[splitNum]
+			print(RootNode.attName)
 			for v in np.unique(test[: ,splitNum]):
+				print(v)
 				Dv = test[test[:, splitNum] == v]
 				Dv = np.delete(Dv, splitNum, axis = 1)
 				curAttr = np.delete(attr, splitNum)
@@ -84,7 +89,7 @@ def main():
 					 [4,"Y","O","S","Y"],
 					 [4,"N","T","N","N"],
 					 [4,"Y","O","N","N"]])
-	attr = np.array(["1","2","3","4"])
+	attr = np.array(["Bedrooms","Basement","Floorplan","Location"])
 	classifiers = {"N": 1, "Y": 2}
 	RootNode = Node("")
 	C45(test, attr, RootNode, classifiers)
