@@ -45,9 +45,9 @@ def findMostFrequent(data):
 	return (bestTuple[0], bestTuple[1]/len(data))
 
 	
-def C45(test, attr, RootNode):
+def C45(test, attr, RootNode, classifiers):
 	if(len(np.unique(test[:,-1])) == 1):
-		RootNode.leaf = Leaf(1, test[0,-1], 1)
+		RootNode.leaf = Leaf(classifiers[test[0,-1]], test[0,-1], 1)
 	elif(len(attr) == 0):
 		freq = findMostFrequent(test)
 		RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
@@ -87,7 +87,7 @@ def main():
 	attr = np.array(["1","2","3","4"])
 	classifiers = {"N": 1, "Y": 2}
 	RootNode = Node("")
-	C45(test, attr, RootNode)
+	C45(test, attr, RootNode, classifiers)
 
 class Leaf:
 	def __init__(self, decision, label, p):
