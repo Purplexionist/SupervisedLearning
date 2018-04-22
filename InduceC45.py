@@ -66,24 +66,26 @@ def main():
 					 [4,"Y","O","N","N"]])
 	attr = np.array(["1","2","3","4"])
 	classifiers = {"N": 1, "Y": 2}
-	Tree = []
+	RootNode = Node("", test)
 	if(len(np.unique(test[:,-1])) == 1):
-		Tree.append(Leaf(1, test[0,-1], 1))
+		RootNode.leaf = Leaf(1, test[0,-1], 1)
 	elif(len(attr) == 0):
 		freq = findMostFrequent(test)
-		Tree.append(Leaf(classifiers[freq[0]], freq[0], freq[1]))
+		RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
 	else:
 		splitNum = selectSplitting(attr, test, .1, 0)
 		if(splitNum == -1):
 			freq = findMostFrequent(test)
-			Tree.append(Leaf(classifiers[freq[0]], freq[0], freq[1]))
+			RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
 		else:
-			curNode = Node(attr[splitNum], test)
+			RootNode.attName = attr[splitNum]
 			for v in np.unique(test[: ,splitNum]):
 				Dv = test[test[:, splitNum] == v]
 				Dv = np.delete(Dv, splitNum, axis = 1)
 				curAttr = np.delete(attr, splitNum)
-				edges.append(C45(Dv, attr))
+				tempNode = Node("")
+				C45(Dv, curAttr, tempNode)
+				newEdge = Edge(v, tempNode)
 
 
 
@@ -93,11 +95,16 @@ class Leaf:
 		self.label = label
 		self.p = p
 
+class Edge:
+	def __init__(self, choice, Node):
+		self.choice = choice
+		self.Node = Node
+
 class Node:
-	def __init__(self, attName, data):
+	def __init__(self, attName):
 		self.edges = []
 		self.attName = attName
-		self.data = data
+		leaf = None
 		
 
 if __name__ == "__main__":
