@@ -87,6 +87,7 @@ def main():
 	attr = np.array(["1","2","3","4"])
 	classifiers = {"N": 1, "Y": 2}
 	RootNode = Node("")
+	C45(test, attr, RootNode)
 
 class Leaf:
 	def __init__(self, decision, label, p):
