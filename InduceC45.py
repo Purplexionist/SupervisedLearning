@@ -3,6 +3,7 @@ import math
 
 def selectSplitting(attr, data, thresh, ratio):
 	dEntropy = findEntropy(data)
+	print(dEntropy)
 	dSize2 = data.shape[0]
 	gain = []
 	#iterate through each attribute
@@ -17,6 +18,7 @@ def selectSplitting(attr, data, thresh, ratio):
 			gain.append(curGain/attrEntropy)
 		else:
 			gain.append(curGain)
+		print(attrEntropy)
 	bestIndex = gain.index(max(gain))
 	if(gain[bestIndex] > thresh):
 		return bestIndex
