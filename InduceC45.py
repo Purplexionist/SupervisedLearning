@@ -72,7 +72,13 @@ def main():
 	elif(len(attr) == 0):
 		freq = findMostFrequent(test)
 		Tree.append(Leaf(classifiers[freq[0]], freq[0], freq[1]))
-	print(selectSplitting(attr, test, .1, 0))
+	else:
+		splitNum = selectSplitting(attr, test, .1, 0)
+		if(splitNum == -1):
+			freq = findMostFrequent(test)
+			Tree.append(Leaf(classifiers[freq[0]], freq[0], freq[1]))
+
+
 
 class Leaf:
 	def __init__(self, decision, label, p):
