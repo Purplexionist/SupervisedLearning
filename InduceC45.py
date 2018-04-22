@@ -64,7 +64,7 @@ def main():
 					 [4,"Y","O","S","Y"],
 					 [4,"N","T","N","N"],
 					 [4,"Y","O","N","N"]])
-	attr = np.array(["1","2","3","4'"])
+	attr = np.array(["1","2","3","4"])
 	classifiers = {"N": 1, "Y": 2}
 	Tree = []
 	if(len(np.unique(test[:,-1])) == 1):
@@ -77,6 +77,13 @@ def main():
 		if(splitNum == -1):
 			freq = findMostFrequent(test)
 			Tree.append(Leaf(classifiers[freq[0]], freq[0], freq[1]))
+		else:
+			curNode = Node(attr[splitNum], test)
+			for v in np.unique(test[: ,splitNum]):
+				Dv = test[test[:, splitNum] == v]
+				Dv = np.delete(Dv, splitNum, axis = 1)
+				curAttr = np.delete(attr, splitNum)
+				edges.append(C45(Dv, attr))
 
 
 
