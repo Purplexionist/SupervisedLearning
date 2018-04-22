@@ -63,7 +63,7 @@ def C45(test, attr, RootNode, classifiers):
 				Dv = np.delete(Dv, splitNum, axis = 1)
 				curAttr = np.delete(attr, splitNum)
 				tempNode = Node("")
-				C45(Dv, curAttr, tempNode)
+				C45(Dv, curAttr, tempNode, classifiers)
 				newEdge = Edge(v, tempNode)
 				RootNode.edges.append(newEdge)
 
