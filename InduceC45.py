@@ -86,6 +86,7 @@ def main():
 				tempNode = Node("")
 				C45(Dv, curAttr, tempNode)
 				newEdge = Edge(v, tempNode)
+				RootNode.edges.append(newEdge)
 
 
 
