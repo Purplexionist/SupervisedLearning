@@ -45,28 +45,7 @@ def findMostFrequent(data):
 	return (bestTuple[0], bestTuple[1]/len(data))
 
 	
-
-
-def main():
-	test = np.array([[3,"N","T","S","N"],
-					 [3,"Y","T","S","Y"],
-					 [3,"Y","O","N","N"],
-					 [3,"Y","T","N","N"],
-					 [3,"N","O","N","N"],
-					 [3,"Y","T","S","Y"],
-					 [3,"Y","O","S","N"],
-					 [3,"N","T","S","N"],
-					 [4,"N","T","S","Y"],
-					 [4,"Y","O","N","N"],
-					 [4,"Y","O","S","Y"],
-					 [4,"N","T","N","N"],
-					 [4,"N","O","S","Y"],
-					 [4,"Y","O","S","Y"],
-					 [4,"N","T","N","N"],
-					 [4,"Y","O","N","N"]])
-	attr = np.array(["1","2","3","4"])
-	classifiers = {"N": 1, "Y": 2}
-	RootNode = Node("", test)
+def C45(test, attr, RootNode):
 	if(len(np.unique(test[:,-1])) == 1):
 		RootNode.leaf = Leaf(1, test[0,-1], 1)
 	elif(len(attr) == 0):
@@ -88,7 +67,26 @@ def main():
 				newEdge = Edge(v, tempNode)
 				RootNode.edges.append(newEdge)
 
-
+def main():
+	test = np.array([[3,"N","T","S","N"],
+					 [3,"Y","T","S","Y"],
+					 [3,"Y","O","N","N"],
+					 [3,"Y","T","N","N"],
+					 [3,"N","O","N","N"],
+					 [3,"Y","T","S","Y"],
+					 [3,"Y","O","S","N"],
+					 [3,"N","T","S","N"],
+					 [4,"N","T","S","Y"],
+					 [4,"Y","O","N","N"],
+					 [4,"Y","O","S","Y"],
+					 [4,"N","T","N","N"],
+					 [4,"N","O","S","Y"],
+					 [4,"Y","O","S","Y"],
+					 [4,"N","T","N","N"],
+					 [4,"Y","O","N","N"]])
+	attr = np.array(["1","2","3","4"])
+	classifiers = {"N": 1, "Y": 2}
+	RootNode = Node("")
 
 class Leaf:
 	def __init__(self, decision, label, p):
