@@ -59,13 +59,13 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
 		freq = findMostFrequent(test)
 		#print(classifiers[test[0,-1]])
 		RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
-		print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice ="'+freq[0]+'" p = "'+freq[1]+'"/>')
+		print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice ="'+freq[0]+'" p = "'+str(freq[1])+'"/>')
 	else:
-		splitNum = selectSplitting(attr, test, 1, 0)
+		splitNum = selectSplitting(attr, test, 0.3, 0)
 		if(splitNum == -1):
 			freq = findMostFrequent(test)
-			#print(classifiers[test[0,-1]])
 			RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
+			print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice ="'+freq[0]+'" p = "'+str(freq[1])+'"/>')
 		else:
 			RootNode.attName = attr[splitNum]
 			#print(RootNode.attName)
@@ -143,7 +143,6 @@ def main():
 	for col in range(test.shape[1]):
 		for row in range(test.shape[0]):
 			labeled_data[row,col] = csv_number_labels[col][int(test[row,col])]
-
 	RootNode = Node("")
 
 	C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels)
