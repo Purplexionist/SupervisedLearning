@@ -11,15 +11,20 @@ def selectSplitting(attr, data, thresh, ratio):
 	#iterate through each attribute
 	for i in range(0,len(attr)):
 		attrEntropy = 0
+		gainEntropy = 0
 		#iterate through each value of an attribute
 		for uniqueValue in np.unique(data[:, i]):
 			dataWithValue = data[data[:,i] == uniqueValue]
 			attrEntropy += len(dataWithValue)/dSize2*findEntropy(dataWithValue)
+			#gainEntropy += len(dataWithValue)/dSize2*math.log(len(dataWithValue)/dSize2, 2)
 		curGain = dEntropy - attrEntropy
+		#gainEntropy = -gainEntropy
+		#print(findEntropy(dataWithValue))
 		if(ratio):
-			gain.append(curGain/attrEntropy)
+			gain.append(curGain/gainEntropy)
 		else:
 			gain.append(curGain)
+		#print(curGain/gainEntropy)
 	bestIndex = gain.index(max(gain))
 	if(gain[bestIndex] > thresh):
 		return bestIndex
@@ -61,7 +66,6 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
 		print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice ="'+freq[0]+'" p = "'+str(freq[1])+'"/>')
 	else:
 		splitNum = selectSplitting(attr, test, 0.1, 0)
-		print(splitNum)
 		if(splitNum == -1):
 			freq = findMostFrequent(test)
 			RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
@@ -135,7 +139,7 @@ def main():
 	indent_counter += 1
 
 
-	test,attr = read_csv_numbers("tree03-20-numbers.csv")
+	test,attr = read_csv_numbers("tree03-100-numbers.csv")
 	csv_number_labels, classifiers = parse_xml("domain.xml", attr)
 
 
@@ -144,6 +148,25 @@ def main():
 		for row in range(test.shape[0]):
 			labeled_data[row,col] = csv_number_labels[col][int(test[row,col])]
 	RootNode = Node("")
+	test = np.array([['3',"N","T","S","N"],
+					 ['3',"Y","T","S","Y"],
+					 ['3',"Y","O","N","N"],
+					 ['3',"Y","T","N","N"],
+					 ['3',"N","O","N","N"],
+					 ['3',"Y","T","S","Y"],
+					 ['3',"Y","O","S","N"],
+					 ['3',"N","T","S","N"],
+					 ['4',"N","T","S","Y"],
+					 ['4',"Y","O","N","N"],
+					 ['4',"Y","O","S","Y"],
+					 ['4',"N","T","N","N"],
+					 ['4',"N","O","S","Y"],
+					 ['4',"Y","O","S","Y"],
+					 ['4',"N","T","N","N"],
+					 ['4',"Y","O","N","N"]])
+	newAtt = np.array(["Bedrooms", "Basement", "Floorplan", "Location"])
+	newClass = {'N': '1', 'Y': '2'}
+	newLabels = [['Bedrooms', '3', '4'], ['Basement', 'N', 'Y'], ['Floorplan', 'T', 'O'], ['Location', 'N', 'Y'], ['Visited', 'N', 'Y']]
 	C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels)
 
 	
