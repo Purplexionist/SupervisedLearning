@@ -8,7 +8,7 @@ import sys
  
 	
 
-def selectSplitting(attr, data, thresh, ratio):
+def selectSplitting(attr, data, thresh):
 	dEntropy = findEntropy(data)
 	#print(dEntropy)
 	dSize2 = data.shape[0]
@@ -21,11 +21,14 @@ def selectSplitting(attr, data, thresh, ratio):
 		for uniqueValue in np.unique(data[:, i]):
 			dataWithValue = data[data[:,i] == uniqueValue]
 			attrEntropy += len(dataWithValue)/dSize2*findEntropy(dataWithValue)
-			#gainEntropy += len(dataWithValue)/dSize2*math.log(len(dataWithValue)/dSize2, 2)
+			gainEntropy += len(dataWithValue)/dSize2*math.log(len(dataWithValue)/dSize2, 2)
+		gainEntropy = -gainEntropy
+		if(gainEntropy == 0):
+			gainEntropy = 1
 		curGain = dEntropy - attrEntropy
 		#gainEntropy = -gainEntropy
 		#print(findEntropy(dataWithValue))
-		if(ratio):
+		if(sys.argv[4] == 1):
 			gain.append(curGain/gainEntropy)
 		else:
 			gain.append(curGain)
@@ -72,7 +75,7 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
 		RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
 		print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice ="'+freq[0]+'" p = "'+str(freq[1])+'"/>')
 	else:
-		splitNum = selectSplitting(attr, test, sys.argv[3], 0)
+		splitNum = selectSplitting(attr, test, sys.argv[3])
 		if(splitNum == -1):
 			freq = findMostFrequent(test)
 			RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
