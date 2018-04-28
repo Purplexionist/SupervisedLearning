@@ -9,7 +9,6 @@ import sys
 	
 
 def selectSplitting(attr, data, thresh):
-	print("hey")
 	dEntropy = findEntropy(data)
 	#print(dEntropy)
 	dSize2 = data.shape[0]
