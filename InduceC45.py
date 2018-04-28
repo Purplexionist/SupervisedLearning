@@ -153,8 +153,7 @@ def main():
 
 	test,attr = read_csv_numbers(sys.argv[2])
 	csv_number_labels, classifiers = parse_xml(sys.argv[1], attr)
-	test,attr = read_csv_numbers("tree03-100-numbers.csv")
-	csv_number_labels, classifiers = parse_xml("domain.xml", attr)
+	
 
 
 	labeled_data = np.empty(test.shape, dtype = "object")
