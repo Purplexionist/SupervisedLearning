@@ -59,7 +59,7 @@ def indent(indent_counter):
 	return '	'*indent_counter
 
 
-def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels, threshold):
+def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
 
 
 	if(len(np.unique(test[:,-1])) == 1):
@@ -72,8 +72,7 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels, th
 		RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
 		print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice ="'+freq[0]+'" p = "'+str(freq[1])+'"/>')
 	else:
-		splitNum = selectSplitting(attr, test, sys.argv[3], 1)
-		splitNum = selectSplitting(attr, test, 0.1, 0)
+		splitNum = selectSplitting(attr, test, sys.argv[3], 0)
 		if(splitNum == -1):
 			freq = findMostFrequent(test)
 			RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
@@ -81,7 +80,7 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels, th
 		else:
 			RootNode.attName = attr[splitNum]
 			#print(RootNode.attName)
-			print(indent(indent_counter)+'<node var ="'+RootNode.attName+'">')
+			print(indent(indent_counter)+'<node var = "'+RootNode.attName+'">')
 			indent_counter += 1
 			for v in np.unique(test[: ,splitNum]):
 				#print(v)
@@ -89,10 +88,12 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels, th
 				Dv = np.delete(Dv, splitNum, axis = 1)
 				curAttr = np.delete(attr, splitNum)
 				tempNode = Node("")
-				print(indent(indent_counter) + '<edge var ="'+v+'" num="'+find_num(csv_number_labels,v)+'">')
-				C45(Dv, curAttr, tempNode, classifiers, indent_counter+1, csv_number_labels, threshold)
+				print(indent(indent_counter) + '<edge var = "'+v+'" num="'+find_num(csv_number_labels,v)+'">')
+				C45(Dv, curAttr, tempNode, classifiers, indent_counter+1, csv_number_labels)
+				print(indent(indent_counter) + "</edge>")
 				newEdge = Edge(v, tempNode)
 				RootNode.edges.append(newEdge)
+			print(indent(indent_counter-1) + "</node>")
 				
 
 
@@ -179,11 +180,11 @@ def main():
 	newLabels = [['Bedrooms', '3', '4'], ['Basement', 'N', 'Y'], ['Floorplan', 'T', 'O'], ['Location', 'N', 'Y'], ['Visited', 'N', 'Y']]
 
 	try:
-		threshold = sys.argv[1] 
+		threshold = sys.argv[3] 
 	except:
 		threshold = 0.1
-	C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels,threshold)
 	C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels)
+	print("</tree>")
 
 	
 
