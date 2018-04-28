@@ -115,7 +115,26 @@ def read_csv_numbers(filepath):
 		arr[i] = lines[3+i].rstrip().split(",")[1:]
 
 	return(arr,attNames[0:-1])
-	
+
+def read_iris(filepath):
+	file = open(filepath,'r')
+	lines = file.readlines()
+	file.close()
+	attNames = ["sepal_length", "sepal_width", "petal_length", "petal_width", "class"]
+	arr = np.empty((len(lines),len(attNames)),dtype = "float64")
+
+	classifiers = {"Iris-setosa":0.0,"Iris-versicolor":1.0,"Iris-virginica":2.0}
+
+	for i in range(len(lines)):
+		line = lines[i].rstrip().split(",")
+		sl = float(line[0])
+		sw = float(line[1])
+		pl = float(line[2])
+		pw = float(line[3])
+		iris = float(classifiers[line[4]])
+		arr[i] = [sl,sw,pl,pw,iris]
+	return(arr,attNames)
+
 
 def parse_xml(filepath, attr):
 	csv_number_labels = []
@@ -135,11 +154,9 @@ def parse_xml(filepath, attr):
 
 def find_num(csv_number_labels, v):
 	i = 0
-	
 	for x in csv_number_labels:
 		j = 0
 		for y in x:
-
 			if y == v:
 				return str(j)
 			j+=1
@@ -150,6 +167,12 @@ def main():
 	indent_counter = 0
 	print('<Tree name = "test">')
 	indent_counter += 1
+
+	#flag indicating this is numerical data; i.e iris dataset
+	if sys.argv[1] == "NULL":
+		test,attr = read_iris(sys.argv[2])
+		print(test)
+		return
 
 	test,attr = read_csv_numbers(sys.argv[2])
 	csv_number_labels, classifiers = parse_xml(sys.argv[1], attr)
