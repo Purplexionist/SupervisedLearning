@@ -72,11 +72,8 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels, th
 		RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
 		print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice ="'+freq[0]+'" p = "'+str(freq[1])+'"/>')
 	else:
-<<<<<<< HEAD
 		splitNum = selectSplitting(attr, test, sys.argv[3], 1)
-=======
 		splitNum = selectSplitting(attr, test, 0.1, 0)
->>>>>>> 9fd23b925ea76ac666403801c67d0d9979878eaa
 		if(splitNum == -1):
 			freq = findMostFrequent(test)
 			RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
@@ -150,14 +147,10 @@ def main():
 	print('<Tree name = "test">')
 	indent_counter += 1
 
-
-<<<<<<< HEAD
 	test,attr = read_csv_numbers(sys.argv[2])
 	csv_number_labels, classifiers = parse_xml(sys.argv[1], attr)
-=======
 	test,attr = read_csv_numbers("tree03-100-numbers.csv")
 	csv_number_labels, classifiers = parse_xml("domain.xml", attr)
->>>>>>> 9fd23b925ea76ac666403801c67d0d9979878eaa
 
 
 	labeled_data = np.empty(test.shape, dtype = "object")
@@ -184,16 +177,13 @@ def main():
 	newAtt = np.array(["Bedrooms", "Basement", "Floorplan", "Location"])
 	newClass = {'N': '1', 'Y': '2'}
 	newLabels = [['Bedrooms', '3', '4'], ['Basement', 'N', 'Y'], ['Floorplan', 'T', 'O'], ['Location', 'N', 'Y'], ['Visited', 'N', 'Y']]
-<<<<<<< HEAD
 
 	try:
 		threshold = sys.argv[1] 
 	except:
 		threshold = 0.1
 	C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels,threshold)
-=======
 	C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels)
->>>>>>> 9fd23b925ea76ac666403801c67d0d9979878eaa
 
 	
 
