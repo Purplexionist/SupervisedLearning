@@ -35,9 +35,9 @@ def selectSplitting(attr, data, thresh, isNumeric):
 	else:
 		for i in range(0, len(attr)):
 			gainArray = []
-			attrEntropy = 0
-			gainEntropy = 0
 			for num in np.unique(data[:, i]):
+				attrEntropy = 0
+				gainEntropy = 0
 				dataUnder = data[data[:, i] <= num]
 				dataAbove = data[data[:, i] > num]
 				if(len(dataUnder) != 0):
