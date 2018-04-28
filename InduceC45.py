@@ -40,10 +40,14 @@ def selectSplitting(attr, data, thresh, isNumeric):
 			for num in np.unique(data[:, i]):
 				dataUnder = data[data[:, i] <= num]
 				dataAbove = data[data[:, i] > num]
-				attrEntropy += len(dataUnder)/dSize2*findEntropy(dataUnder)
-				attrEntropy += len(dataAbove)/dSize2*findEntropy(dataAbove)
-				gainEntropy += len(dataUnder)/dSize2*math.log(len(dataUnder)/dSize2, 2)
-				gainEntropy += len(dataAbove)/dSize2*math.log(len(dataAbove)/dSize2, 2)
+				if(len(dataUnder) != 0):
+					attrEntropy += len(dataUnder)/dSize2*findEntropy(dataUnder)
+				if(len(dataAbove) != 0):
+					attrEntropy += len(dataAbove)/dSize2*findEntropy(dataAbove)
+				if(len(dataUnder) != 0):
+					gainEntropy += len(dataUnder)/dSize2*math.log(len(dataUnder)/dSize2, 2)
+				if(len(dataAbove) != 0):
+					gainEntropy += len(dataAbove)/dSize2*math.log(len(dataAbove)/dSize2, 2)
 				gainEntropy = -gainEntropy
 				if(gainEntropy == 0):
 					gainEntropy = 1
@@ -58,7 +62,7 @@ def selectSplitting(attr, data, thresh, isNumeric):
 				if(inner[1] > numMax):
 					numMax = inner[1]
 					alphaBest = inner[0]
-			gain.append([i, alphaMax, numMax])
+			gain.append([i, alphaBest, numMax])
 	if(isNumeric == 1):
 		curIndex = -1
 		curBestAlpha = -99
