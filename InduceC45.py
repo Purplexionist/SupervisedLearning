@@ -162,25 +162,7 @@ def main():
 		for row in range(test.shape[0]):
 			labeled_data[row,col] = csv_number_labels[col][int(test[row,col])]
 	RootNode = Node("")
-	test = np.array([['3',"N","T","S","N"],
-					 ['3',"Y","T","S","Y"],
-					 ['3',"Y","O","N","N"],
-					 ['3',"Y","T","N","N"],
-					 ['3',"N","O","N","N"],
-					 ['3',"Y","T","S","Y"],
-					 ['3',"Y","O","S","N"],
-					 ['3',"N","T","S","N"],
-					 ['4',"N","T","S","Y"],
-					 ['4',"Y","O","N","N"],
-					 ['4',"Y","O","S","Y"],
-					 ['4',"N","T","N","N"],
-					 ['4',"N","O","S","Y"],
-					 ['4',"Y","O","S","Y"],
-					 ['4',"N","T","N","N"],
-					 ['4',"Y","O","N","N"]])
-	newAtt = np.array(["Bedrooms", "Basement", "Floorplan", "Location"])
-	newClass = {'N': '1', 'Y': '2'}
-	newLabels = [['Bedrooms', '3', '4'], ['Basement', 'N', 'Y'], ['Floorplan', 'T', 'O'], ['Location', 'N', 'Y'], ['Visited', 'N', 'Y']]
+	
 
 	try:
 		threshold = sys.argv[3] 
