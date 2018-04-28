@@ -8,36 +8,76 @@ import sys
  
 	
 
-def selectSplitting(attr, data, thresh):
+def selectSplitting(attr, data, thresh, isNumeric):
 	dEntropy = findEntropy(data)
 	#print(dEntropy)
 	dSize2 = data.shape[0]
 	gain = []
 	#iterate through each attribute
-	for i in range(0,len(attr)):
-		attrEntropy = 0
-		gainEntropy = 0
-		#iterate through each value of an attribute
-		for uniqueValue in np.unique(data[:, i]):
-			dataWithValue = data[data[:,i] == uniqueValue]
-			attrEntropy += len(dataWithValue)/dSize2*findEntropy(dataWithValue)
-			gainEntropy += len(dataWithValue)/dSize2*math.log(len(dataWithValue)/dSize2, 2)
-		gainEntropy = -gainEntropy
-		if(gainEntropy == 0):
-			gainEntropy = 1
-		curGain = dEntropy - attrEntropy
-		#gainEntropy = -gainEntropy
-		#print(findEntropy(dataWithValue))
-		if(sys.argv[4] == 1):
-			gain.append(curGain/gainEntropy)
-		else:
-			gain.append(curGain)
-		#print(curGain/gainEntropy)
-	bestIndex = gain.index(max(gain))
-	if(gain[bestIndex] > float(thresh)):
-		return bestIndex
+	if(isNumeric == 0):
+		for i in range(0,len(attr)):
+			attrEntropy = 0
+			gainEntropy = 0
+			#iterate through each value of an attribute
+			for uniqueValue in np.unique(data[:, i]):
+				dataWithValue = data[data[:,i] == uniqueValue]
+				attrEntropy += len(dataWithValue)/dSize2*findEntropy(dataWithValue)
+				gainEntropy += len(dataWithValue)/dSize2*math.log(len(dataWithValue)/dSize2, 2)
+			gainEntropy = -gainEntropy
+			if(gainEntropy == 0):
+				gainEntropy = 1
+			curGain = dEntropy - attrEntropy
+			if(sys.argv[4] == 1):
+				gain.append(curGain/gainEntropy)
+			else:
+				gain.append(curGain)
+			#print(curGain/gainEntropy)
 	else:
-		return -1
+		for i in range(0, len(attr)):
+			gainArray = []
+			attrEntropy = 0
+			gainEntropy = 0
+			for num in np.uniqueValue(data[:, i]):
+				dataUnder = data[data[:, i] <= num]
+				dataAbove = data[data[:, i] > num]
+				attrEntropy += len(dataUnder)/dSize2*findEntropy(dataUnder)
+				attrEntropy += len(dataAbove)/dSize2*findEntropy(dataAbove)
+				gainEntropy += len(dataUnder)/dSize2*math.log(len(dataUnder)/dSize2, 2)
+				gainEntropy += len(dataAbove)/dSize2*math.log(len(dataAbove)/dSize2, 2)
+				gainEntropy = -gainEntropy
+				if(gainEntropy == 0):
+					gainEntropy = 1
+				curGain = dEntropy - attrEntropy
+				if(sys.argv[4] == 1):
+					gainArray.append([num, curGain/gainEntropy])
+				else:
+					gainArray.append([num, curGain])
+			numMax = -999
+			alphaBest = -1
+			for inner in gainArray:
+				if(inner[1] > numMax):
+					numMax = inner[1]
+					alphaBest = inner[0]
+		    gain.append([i, alphaMax, numMax])
+	if(isNumeric == 1):
+		curIndex = -1
+		curBestAlpha = -99
+		curBestNum = -99
+		for miniList in gain:
+			if(miniList[2] > curBestNum):
+				curBestNum = miniList[2]
+				curIndex = miniList[0]
+				curBestAlpha = miniList[1]
+		if(curBestNum > float(thresh)):
+			return curIndex, curBestAlpha
+		else:
+			return -1, 0
+	else:
+		bestIndex = gain.index(max(gain))
+		if(gain[bestIndex] > float(thresh)):
+			return bestIndex, 0
+		else:
+			return -1, 0
 
 def findEntropy(data):
 	uniqueClassifier = np.unique(data[:,-1])
@@ -61,10 +101,12 @@ def findMostFrequent(data):
 def indent(indent_counter):
 	return '	'*indent_counter
 
-
+#csv_number_labels is None for numeric
+#isNumeric equals 1 for numeric data
 def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
-
-
+	isNumeric = 0
+	if(csv_number_labels == None):
+		isNumeric = 1
 	if(len(np.unique(test[:,-1])) == 1):
 		#print(classifiers[test[0,-1]])
 		RootNode.leaf = Leaf(classifiers[test[0,-1]], test[0,-1], 1)
@@ -75,7 +117,7 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
 		RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
 		print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice ="'+freq[0]+'" p = "'+str(freq[1])+'"/>')
 	else:
-		splitNum = selectSplitting(attr, test, sys.argv[3])
+		splitNum, alpha = selectSplitting(attr, test, sys.argv[3], isNumeric)
 		if(splitNum == -1):
 			freq = findMostFrequent(test)
 			RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
@@ -164,7 +206,7 @@ def main():
 	
 
 
-
+	#csv_number_labels is null for numeric
 	C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels)
 	print("</tree>")
 
