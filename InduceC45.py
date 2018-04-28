@@ -165,10 +165,8 @@ def main():
 	RootNode = Node("")
 	
 
-	try:
-		threshold = sys.argv[3] 
-	except:
-		threshold = 0.1
+
+
 	C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels)
 	print("</tree>")
 
