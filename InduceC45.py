@@ -131,18 +131,21 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
 			#print(RootNode.attName)
 			print(indent(indent_counter)+'<node var = "'+RootNode.attName+'">')
 			indent_counter += 1
-			for v in np.unique(test[: ,splitNum]):
-				#print(v)
-				Dv = test[test[:, splitNum] == v]
-				Dv = np.delete(Dv, splitNum, axis = 1)
-				curAttr = np.delete(attr, splitNum)
-				tempNode = Node("")
-				print(indent(indent_counter) + '<edge var = "'+v+'" num="'+find_num(csv_number_labels,v)+'">')
-				C45(Dv, curAttr, tempNode, classifiers, indent_counter+1, csv_number_labels)
-				print(indent(indent_counter) + "</edge>")
-				newEdge = Edge(v, tempNode)
-				RootNode.edges.append(newEdge)
-			print(indent(indent_counter-1) + "</node>")
+			if(isNumeric == 0):
+				for v in np.unique(test[: ,splitNum]):
+					#print(v)
+					Dv = test[test[:, splitNum] == v]
+					Dv = np.delete(Dv, splitNum, axis = 1)
+					curAttr = np.delete(attr, splitNum)
+					tempNode = Node("")
+					print(indent(indent_counter) + '<edge var = "'+v+'" num="'+find_num(csv_number_labels,v)+'">')
+					C45(Dv, curAttr, tempNode, classifiers, indent_counter+1, csv_number_labels)
+					print(indent(indent_counter) + "</edge>")
+					newEdge = Edge(v, tempNode)
+					RootNode.edges.append(newEdge)
+				print(indent(indent_counter-1) + "</node>")
+			else:
+				
 				
 
 
