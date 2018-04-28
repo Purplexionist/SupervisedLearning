@@ -114,18 +114,18 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
 	if(len(np.unique(test[:,-1])) == 1):
 		#print(classifiers[test[0,-1]])
 		RootNode.leaf = Leaf(classifiers[test[0,-1]], test[0,-1], 1)
-		print(indent(indent_counter) + '<decision end = '+classifiers[test[0,-1]]+' choice = "'+test[0,-1]+'" p = "1.00"/>')
+		print(indent(indent_counter) + '<decision end = '+classifiers[test[0,-1]]+' choice = "'+str(test[0,-1])+'" p = "1.00"/>')
 	elif(len(attr) == 0):
 		freq = findMostFrequent(test)
 		#print(classifiers[test[0,-1]])
 		RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
-		print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice = "'+freq[0]+'" p = "'+str(freq[1])+'"/>')
+		print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice = "'+str(freq[0])+'" p = "'+str(freq[1])+'"/>')
 	else:
 		splitNum, alpha = selectSplitting(attr, test, sys.argv[3], isNumeric)
 		if(splitNum == -1):
 			freq = findMostFrequent(test)
 			RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
-			print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice = "'+freq[0]+'" p = "'+str(freq[1])+'"/>')
+			print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice = "'+str(freq[0])+'" p = "'+str(freq[1])+'"/>')
 		else:
 			RootNode.attName = attr[splitNum]
 			#print(RootNode.attName)
@@ -169,7 +169,8 @@ def read_iris(filepath):
 	attNames = ["sepal_length", "sepal_width", "petal_length", "petal_width", "class"]
 	arr = np.empty((len(lines),len(attNames)),dtype = "float64")
 
-	classifiers = {"Iris-setosa":0.0,"Iris-versicolor":1.0,"Iris-virginica":2.0}
+	labels = {"Iris-setosa":0.0,"Iris-versicolor":1.0,"Iris-virginica":2.0}
+	classifiers = {0.0:"Iris-setosa",1.0:"Iris-versicolor",2.0:"Iris-virginica"}
 
 	for i in range(len(lines)):
 		line = lines[i].rstrip().split(",")
@@ -177,7 +178,7 @@ def read_iris(filepath):
 		sw = float(line[1])
 		pl = float(line[2])
 		pw = float(line[3])
-		iris = float(classifiers[line[4]])
+		iris = float(labels[line[4]])
 		arr[i] = [sl,sw,pl,pw,iris]
 	return arr,attNames,classifiers
 
