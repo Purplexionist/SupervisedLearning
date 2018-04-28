@@ -37,7 +37,7 @@ def selectSplitting(attr, data, thresh, isNumeric):
 			gainArray = []
 			attrEntropy = 0
 			gainEntropy = 0
-			for num in np.uniqueValue(data[:, i]):
+			for num in np.unique(data[:, i]):
 				dataUnder = data[data[:, i] <= num]
 				dataAbove = data[data[:, i] > num]
 				attrEntropy += len(dataUnder)/dSize2*findEntropy(dataUnder)
@@ -58,7 +58,7 @@ def selectSplitting(attr, data, thresh, isNumeric):
 				if(inner[1] > numMax):
 					numMax = inner[1]
 					alphaBest = inner[0]
-		    gain.append([i, alphaMax, numMax])
+			gain.append([i, alphaMax, numMax])
 	if(isNumeric == 1):
 		curIndex = -1
 		curBestAlpha = -99
@@ -175,7 +175,7 @@ def read_iris(filepath):
 		pw = float(line[3])
 		iris = float(classifiers[line[4]])
 		arr[i] = [sl,sw,pl,pw,iris]
-	return(arr,attNames)
+	return arr,attNames,classifiers
 
 
 def parse_xml(filepath, attr):
@@ -212,19 +212,17 @@ def main():
 
 	#flag indicating this is numerical data; i.e iris dataset
 	if sys.argv[1] == "NULL":
-		test,attr = read_iris(sys.argv[2])
-		print(test)
-		return
-
-	test,attr = read_csv_numbers(sys.argv[2])
-	csv_number_labels, classifiers = parse_xml(sys.argv[1], attr)
+		labeled_data,attr,classifiers = read_iris(sys.argv[2])
+		csv_number_labels = None
+	else:
+		test,attr = read_csv_numbers(sys.argv[2])
+		csv_number_labels, classifiers = parse_xml(sys.argv[1], attr)
 	
 
-
-	labeled_data = np.empty(test.shape, dtype = "object")
-	for col in range(test.shape[1]):
-		for row in range(test.shape[0]):
-			labeled_data[row,col] = csv_number_labels[col][int(test[row,col])]
+		labeled_data = np.empty(test.shape, dtype = "object")
+		for col in range(test.shape[1]):
+			for row in range(test.shape[0]):
+				labeled_data[row,col] = csv_number_labels[col][int(test[row,col])]
 	RootNode = Node("")
 	
 
