@@ -1,6 +1,11 @@
 import numpy as np
 import math
 import xml.etree.ElementTree as ET
+import sys
+
+#run program with this:
+#	python InduceC45.py <domainFile.xml> <TrainingSetFile.csv> <threshold_float> [<restrictionsFile>]
+ 
 	
 
 def selectSplitting(attr, data, thresh, ratio):
@@ -11,18 +16,22 @@ def selectSplitting(attr, data, thresh, ratio):
 	#iterate through each attribute
 	for i in range(0,len(attr)):
 		attrEntropy = 0
+		gainEntropy = 0
 		#iterate through each value of an attribute
 		for uniqueValue in np.unique(data[:, i]):
 			dataWithValue = data[data[:,i] == uniqueValue]
 			attrEntropy += len(dataWithValue)/dSize2*findEntropy(dataWithValue)
+			#gainEntropy += len(dataWithValue)/dSize2*math.log(len(dataWithValue)/dSize2, 2)
 		curGain = dEntropy - attrEntropy
+		#gainEntropy = -gainEntropy
+		#print(findEntropy(dataWithValue))
 		if(ratio):
-			gain.append(curGain/attrEntropy)
+			gain.append(curGain/gainEntropy)
 		else:
 			gain.append(curGain)
-		#print(attrEntropy)
+		#print(curGain/gainEntropy)
 	bestIndex = gain.index(max(gain))
-	if(gain[bestIndex] > thresh):
+	if(gain[bestIndex] > float(thresh)):
 		return bestIndex
 	else:
 		return -1
@@ -50,7 +59,9 @@ def indent(indent_counter):
 	return '	'*indent_counter
 
 
-def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
+def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels, threshold):
+
+
 	if(len(np.unique(test[:,-1])) == 1):
 		#print(classifiers[test[0,-1]])
 		RootNode.leaf = Leaf(classifiers[test[0,-1]], test[0,-1], 1)
@@ -59,13 +70,13 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
 		freq = findMostFrequent(test)
 		#print(classifiers[test[0,-1]])
 		RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
-		print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice ="'+freq[0]+'" p = "'+freq[1]+'"/>')
+		print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice ="'+freq[0]+'" p = "'+str(freq[1])+'"/>')
 	else:
-		splitNum = selectSplitting(attr, test, 1, 0)
+		splitNum = selectSplitting(attr, test, sys.argv[3], 1)
 		if(splitNum == -1):
 			freq = findMostFrequent(test)
-			#print(classifiers[test[0,-1]])
 			RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
+			print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice ="'+freq[0]+'" p = "'+str(freq[1])+'"/>')
 		else:
 			RootNode.attName = attr[splitNum]
 			#print(RootNode.attName)
@@ -78,7 +89,7 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
 				curAttr = np.delete(attr, splitNum)
 				tempNode = Node("")
 				print(indent(indent_counter) + '<edge var ="'+v+'" num="'+find_num(csv_number_labels,v)+'">')
-				C45(Dv, curAttr, tempNode, classifiers, indent_counter+1, csv_number_labels)
+				C45(Dv, curAttr, tempNode, classifiers, indent_counter+1, csv_number_labels, threshold)
 				newEdge = Edge(v, tempNode)
 				RootNode.edges.append(newEdge)
 				
@@ -94,6 +105,7 @@ def read_csv_numbers(filepath):
 	classifier = lines[2].rstrip()
 
 	arr = np.empty((len(lines)-3,len(attLevels)))
+
 	for i in range(len(lines)-3):
 		arr[i] = lines[3+i].rstrip().split(",")[1:]
 
@@ -135,18 +147,40 @@ def main():
 	indent_counter += 1
 
 
-	test,attr = read_csv_numbers("tree02-20-numbers.csv")
-	csv_number_labels, classifiers = parse_xml("domain.xml", attr)
+	test,attr = read_csv_numbers(sys.argv[2])
+	csv_number_labels, classifiers = parse_xml(sys.argv[1], attr)
 
 
 	labeled_data = np.empty(test.shape, dtype = "object")
 	for col in range(test.shape[1]):
 		for row in range(test.shape[0]):
 			labeled_data[row,col] = csv_number_labels[col][int(test[row,col])]
-
 	RootNode = Node("")
+	test = np.array([['3',"N","T","S","N"],
+					 ['3',"Y","T","S","Y"],
+					 ['3',"Y","O","N","N"],
+					 ['3',"Y","T","N","N"],
+					 ['3',"N","O","N","N"],
+					 ['3',"Y","T","S","Y"],
+					 ['3',"Y","O","S","N"],
+					 ['3',"N","T","S","N"],
+					 ['4',"N","T","S","Y"],
+					 ['4',"Y","O","N","N"],
+					 ['4',"Y","O","S","Y"],
+					 ['4',"N","T","N","N"],
+					 ['4',"N","O","S","Y"],
+					 ['4',"Y","O","S","Y"],
+					 ['4',"N","T","N","N"],
+					 ['4',"Y","O","N","N"]])
+	newAtt = np.array(["Bedrooms", "Basement", "Floorplan", "Location"])
+	newClass = {'N': '1', 'Y': '2'}
+	newLabels = [['Bedrooms', '3', '4'], ['Basement', 'N', 'Y'], ['Floorplan', 'T', 'O'], ['Location', 'N', 'Y'], ['Visited', 'N', 'Y']]
 
-	C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels)
+	try:
+		threshold = sys.argv[1] 
+	except:
+		threshold = 0.1
+	C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels,threshold)
 
 	
 
