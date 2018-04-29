@@ -38,7 +38,7 @@ def read_csv(filepath):
 
 def main():
 	data, attr = read_csv(sys.argv[1])
-	tree = ET.parse(sys.argv[2], ET.XMLParser(encoding='utf-8'))
+	tree = ET.parse(sys.argv[2])
 	root = tree.getroot()
 
 if __name__ == "__main__":
