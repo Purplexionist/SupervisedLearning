@@ -1,10 +1,25 @@
 <Tree name = "test">
 	<node var = "petal_length">
+<<<<<<< HEAD
+		<edge var = "le 1.9">
+			<decision end = "Iris-setosa" choice = "0.0" p = "1.00"/>
+		</edge>
+		<edge var = "g 1.9">
+			<node var = "petal_width">
+				<edge var = "le 1.7">
+					<decision end = "Iris-versicolor" choice = "1.0" p = "0.9074074074074074"/>
+				</edge>
+				<edge var = "g 1.7">
+					<decision end = "Iris-virginica" choice = "2.0" p = "0.9782608695652174"/>
+				</edge>
+			</node>
+=======
 		<edge num = "le 1.9">
 			<decision end = "Iris-setosa" choice = "0.0" p = "1.00"/>
 		</edge>
 		<edge num = "g 1.9">
 			<decision end = "Iris-versicolor" choice = "1.0" p = "0.5"/>
+>>>>>>> 9129d47a9b3baf8a8ab35c365cbae13847c875c5
 		</edge>
 	</node>
 </Tree>

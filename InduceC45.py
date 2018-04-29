@@ -256,13 +256,11 @@ def main():
 	try:
 		restrictionsFile = open(sys.argv[5])
 		restrictions = restrictionsFile.readlines()[0].split(",")[1:]
-		print(len(restrictions))
 		for i in range(len(restrictions)-1,-1,-1):
 			print(i)
 			if restrictions[i] == '0':
 				labeled_data = np.delete(labeled_data,i,axis=1)
 				attr = np.delete(attr,i)
-			print(attr)
 
 	except:
 		print("No restrictions file found/inputted")
