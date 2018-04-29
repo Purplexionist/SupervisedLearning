@@ -1,0 +1,10 @@
+<Tree name = "test">
+	<node var = "petal_length">
+		<edge num = "le 1.9">
+			<decision end = "Iris-setosa" choice = "0.0" p = "1.00"/>
+		</edge>
+		<edge num = "g 1.9">
+			<decision end = "Iris-versicolor" choice = "1.0" p = "0.5"/>
+		</edge>
+	</node>
+</Tree>
