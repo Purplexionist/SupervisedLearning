@@ -72,7 +72,7 @@ def findClass(row, rootNode, myDict, attr, flag):
 						findClass(row, i.Node, myDict, attr, 1)
 			else:
 				if(float(i.choice) == row[attr[rootNode.attName]]):
-					findClass(row, i.Node, myDict, attr)
+					findClass(row, i.Node, myDict, attr, 0)
 
 
 
