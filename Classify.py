@@ -1,6 +1,7 @@
 import sys
 import csv
 import numpy as np
+import xml.etree.ElementTree as ET
 
 def read_csv(filepath):
 	file = open(filepath, 'r')
@@ -32,10 +33,14 @@ def read_csv(filepath):
 	
 	return data, attr
 
+def generateTree(xmlFile):
+
+
 def main():
 	data, attr = read_csv(sys.argv[1])
 	print(len(data))
 	print(data)
 	print(attr)
+	tree = ET.parse(sys.argv[2])
 if __name__ == "__main__":
 	main()

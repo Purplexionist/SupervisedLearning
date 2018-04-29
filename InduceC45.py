@@ -107,29 +107,29 @@ def indent(indent_counter):
 
 #csv_number_labels is None for numeric
 #isNumeric equals 1 for numeric data
-def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
+def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels, f2):
 	isNumeric = 0
 	if(csv_number_labels == None):
 		isNumeric = 1
 	if(len(np.unique(test[:,-1])) == 1):
 		#print(classifiers[test[0,-1]])
 		RootNode.leaf = Leaf(classifiers[test[0,-1]], test[0,-1], 1)
-		print(indent(indent_counter) + '<decision end = '+classifiers[test[0,-1]]+' choice = "'+str(test[0,-1])+'" p = "1.00"/>')
+		f2.write(indent(indent_counter) + '<decision end = "'+classifiers[test[0,-1]]+'" choice = "'+str(test[0,-1])+'" p = "1.00"/>\n')
 	elif(len(attr) == 0):
 		freq = findMostFrequent(test)
 		#print(classifiers[test[0,-1]])
 		RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
-		print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice = "'+str(freq[0])+'" p = "'+str(freq[1])+'"/>')
+		f2.write(indent(indent_counter) + '<decision end = "'+classifiers[freq[0]]+'" choice = "'+str(freq[0])+'" p = "'+str(freq[1])+'"/>\n')
 	else:
 		splitNum, alpha = selectSplitting(attr, test, sys.argv[3], isNumeric)
 		if(splitNum == -1):
 			freq = findMostFrequent(test)
 			RootNode.leaf = Leaf(classifiers[freq[0]], freq[0], freq[1])
-			print(indent(indent_counter) + '<decision end = '+classifiers[freq[0]]+' choice = "'+str(freq[0])+'" p = "'+str(freq[1])+'"/>')
+			f2.write(indent(indent_counter) + '<decision end = "'+classifiers[freq[0]]+'" choice = "'+str(freq[0])+'" p = "'+str(freq[1])+'"/>\n')
 		else:
 			RootNode.attName = attr[splitNum]
 			#print(RootNode.attName)
-			print(indent(indent_counter)+'<node var = "'+RootNode.attName+'">')
+			f2.write(indent(indent_counter)+'<node var = "'+RootNode.attName+'">\n')
 			indent_counter += 1
 			if(isNumeric == 0):
 				for v in np.unique(test[: ,splitNum]):
@@ -138,12 +138,12 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
 					Dv = np.delete(Dv, splitNum, axis = 1)
 					curAttr = np.delete(attr, splitNum)
 					tempNode = Node("")
-					print(indent(indent_counter) + '<edge var = "'+v+'" num="'+find_num(csv_number_labels,v)+'">')
-					C45(Dv, curAttr, tempNode, classifiers, indent_counter+1, csv_number_labels)
-					print(indent(indent_counter) + "</edge>")
+					f2.write(indent(indent_counter) + '<edge var = "'+v+'" num="'+find_num(csv_number_labels,v)+'">\n')
+					C45(Dv, curAttr, tempNode, classifiers, indent_counter+1, csv_number_labels, f2)
+					f2.write(indent(indent_counter) + "</edge>\n")
 					newEdge = Edge(v, tempNode)
 					RootNode.edges.append(newEdge)
-				print(indent(indent_counter-1) + "</node>")
+				f2.write(indent(indent_counter-1) + "</node>\n")
 			else:
 				Dv1 = test[test[:, splitNum] <= alpha]
 				#print(len(Dv1))
@@ -151,9 +151,9 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
 					Dv1 = np.delete(Dv1, splitNum, axis = 1)
 					curAttr = np.delete(attr, splitNum)
 				tempNode = Node("")
-				print(indent(indent_counter) + '<edge var = "<= ' + str(alpha) +'">' )
-				C45(Dv1, curAttr, tempNode, classifiers, indent_counter+1, None)
-				print(indent(indent_counter) + "</edge>")
+				f2.write(indent(indent_counter) + '<edge var = "<= ' + str(alpha) +'">\n' )
+				C45(Dv1, curAttr, tempNode, classifiers, indent_counter+1, None, f2)
+				f2.write(indent(indent_counter) + "</edge>\n")
 				newEdge = Edge(-alpha, tempNode)
 				RootNode.edges.append(newEdge)
 				Dv2 = test[test[:, splitNum] > alpha]
@@ -163,12 +163,12 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
 						curAttr2 = np.delete(attr, splitNum)
 
 					tempNode2 = Node("")
-					print(indent(indent_counter) + '<edge var = "> ' + str(alpha) +'">' )
-					C45(Dv2, curAttr2, tempNode2, classifiers, indent_counter+1, None)
-					print(indent(indent_counter) + "</edge>")
+					f2.write(indent(indent_counter) + '<edge var = "> ' + str(alpha) +'">\n' )
+					C45(Dv2, curAttr2, tempNode2, classifiers, indent_counter+1, None, f2)
+					f2.write(indent(indent_counter) + "</edge>\n")
 					newEdge2 = Edge(alpha, tempNode2)
 					RootNode.edges.append(newEdge2)
-				print(indent(indent_counter-1) + "</node>")
+				f2.write(indent(indent_counter-1) + "</node>\n")
 
 def read_csv_numbers(filepath):
 	file = open(filepath, 'r')
@@ -234,8 +234,9 @@ def find_num(csv_number_labels, v):
 
 
 def main():
+	f2 = open('answerXML.xml', 'w')
 	indent_counter = 0
-	print('<Tree name = "test">')
+	f2.write('<Tree name = "test">\n')
 	indent_counter += 1
 
 	#flag indicating this is numerical data; i.e iris dataset
@@ -267,8 +268,8 @@ def main():
 		print("No restrictions file found/inputted")
 
 	#csv_number_labels is null for numeric
-	C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels)
-	print("</tree>")
+	C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels, f2)
+	f2.write("</tree>")
 
 	
 
