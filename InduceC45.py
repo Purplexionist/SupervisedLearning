@@ -252,7 +252,7 @@ def main():
 				labeled_data[row,col] = csv_number_labels[col][int(test[row,col])]
 	RootNode = Node("")
 	
-	if True:
+	try:
 		restrictionsFile = open(sys.argv[5])
 		restrictions = restrictionsFile.readlines()[0].split(",")[1:]
 		print(len(restrictions))
@@ -263,8 +263,8 @@ def main():
 				attr = np.delete(attr,i)
 			print(attr)
 
-	#except:
-	#	print("No restrictions file found/inputted")
+	except:
+		print("No restrictions file found/inputted")
 
 	#csv_number_labels is null for numeric
 	C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels)
