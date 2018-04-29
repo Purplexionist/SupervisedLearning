@@ -157,17 +157,17 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
 				newEdge = Edge(-alpha, tempNode)
 				RootNode.edges.append(newEdge)
 				Dv2 = test[test[:, splitNum] > alpha]
-				#print(len(Dv2))
-				if(len(np.unique(Dv2[:, splitNum]) == 1)):
-					Dv2 = np.delete(Dv2, splitNum, axis = 1)
-					curAttr2 = np.delete(attr, splitNum)
+				if(len(Dv2) != 0):
+					if(len(np.unique(Dv2[:, splitNum]) == 1)):
+						Dv2 = np.delete(Dv2, splitNum, axis = 1)
+						curAttr2 = np.delete(attr, splitNum)
 
-				tempNode2 = Node("")
-				print(indent(indent_counter) + '<edge var = "> ' + str(alpha) +'">' )
-				C45(Dv2, curAttr2, tempNode2, classifiers, indent_counter+1, None)
-				print(indent(indent_counter) + "</edge>")
-				newEdge2 = Edge(alpha, tempNode2)
-				RootNode.edges.append(newEdge2)
+					tempNode2 = Node("")
+					print(indent(indent_counter) + '<edge var = "> ' + str(alpha) +'">' )
+					C45(Dv2, curAttr2, tempNode2, classifiers, indent_counter+1, None)
+					print(indent(indent_counter) + "</edge>")
+					newEdge2 = Edge(alpha, tempNode2)
+					RootNode.edges.append(newEdge2)
 				print(indent(indent_counter-1) + "</node>")
 
 def read_csv_numbers(filepath):
