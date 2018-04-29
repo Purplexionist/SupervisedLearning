@@ -151,7 +151,7 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels, f2
 					Dv1 = np.delete(Dv1, splitNum, axis = 1)
 					curAttr = np.delete(attr, splitNum)
 				tempNode = Node("")
-				f2.write(indent(indent_counter) + '<edge var = "le ' + str(alpha) +'">\n' )
+				f2.write(indent(indent_counter) + '<edge num = "le ' + str(alpha) +'">\n' )
 				C45(Dv1, curAttr, tempNode, classifiers, indent_counter+1, None, f2)
 				f2.write(indent(indent_counter) + "</edge>\n")
 				newEdge = Edge(-alpha, tempNode)
@@ -163,7 +163,7 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels, f2
 						curAttr2 = np.delete(attr, splitNum)
 
 					tempNode2 = Node("")
-					f2.write(indent(indent_counter) + '<edge var = "g ' + str(alpha) +'">\n' )
+					f2.write(indent(indent_counter) + '<edge num = "g ' + str(alpha) +'">\n' )
 					C45(Dv2, curAttr2, tempNode2, classifiers, indent_counter+1, None, f2)
 					f2.write(indent(indent_counter) + "</edge>\n")
 					newEdge2 = Edge(alpha, tempNode2)
