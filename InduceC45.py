@@ -269,7 +269,7 @@ def main():
 
 	#csv_number_labels is null for numeric
 	C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels, f2)
-	f2.write("</tree>")
+	f2.write("</Tree>")
 
 	
 

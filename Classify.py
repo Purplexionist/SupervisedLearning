@@ -33,14 +33,13 @@ def read_csv(filepath):
 	
 	return data, attr
 
-def generateTree(xmlFile):
+#def generateTree(xmlFile):
 
 
 def main():
 	data, attr = read_csv(sys.argv[1])
-	print(len(data))
-	print(data)
-	print(attr)
-	tree = ET.parse(sys.argv[2])
+	tree = ET.parse(sys.argv[2], ET.XMLParser(encoding='utf-8'))
+	root = tree.getroot()
+
 if __name__ == "__main__":
 	main()
