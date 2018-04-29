@@ -33,13 +33,45 @@ def read_csv(filepath):
 	
 	return data, attr
 
-#def generateTree(xmlFile):
+def generateTree(rootXML, rootNode):
+	for child in rootXML:
+		#if it has a node
+		if(child.tag == 'node'):
+			rootNode.attName = child.attrib['var']
+			generateTree(child, rootNode)
+		elif(child.tag == 'edge'):
+			tempNode = Node("")
+			rootNode.edges.append(Edge(child.attrib['num'], tempNode))
+			generateTree(child, tempNode)
+		elif(child.tag == 'decision'):
+			rootNode.leaf = Leaf(child.attrib['choice'], child.attrib['choice'], child.attrib['choice'])
 
 
 def main():
 	data, attr = read_csv(sys.argv[1])
 	tree = ET.parse(sys.argv[2])
 	root = tree.getroot()
+	rootNode = Node("")
+	generateTree(root, rootNode)
+
+
+class Leaf:
+	def __init__(self, decision, label, p):
+		self.decision = decision
+		self.label = label
+		self.p = p
+
+class Edge:
+	def __init__(self, choice, Node):
+		self.choice = choice
+		self.Node = Node
+
+class Node:
+	def __init__(self, attName):
+		self.edges = []
+		self.attName = attName
+		leaf = None
 
 if __name__ == "__main__":
 	main()
+
