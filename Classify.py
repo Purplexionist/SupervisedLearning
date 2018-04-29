@@ -54,6 +54,7 @@ def findClass(row, rootNode, myDict, attr, flag):
 			else:
 				myDict["total"] = myDict["total"] + 1
 				myDict["wrong"] = myDict["wrong"] + 1
+			print("Row:",str(row[0:-1]), ", Predicted:",rootNode.leaf.label)
 		else:
 			if(float(rootNode.leaf.decision) == float(row[-1])):
 				myDict["total"] = myDict["total"] + 1
@@ -61,6 +62,7 @@ def findClass(row, rootNode, myDict, attr, flag):
 			else:
 				myDict["total"] = myDict["total"] + 1
 				myDict["wrong"] = myDict["wrong"] + 1
+			print("Row:",str(row[0:-1]), ", Predicted:",rootNode.leaf.label)
 	else:
 		for i in rootNode.edges:
 			if(flag == 1):
@@ -72,7 +74,7 @@ def findClass(row, rootNode, myDict, attr, flag):
 						findClass(row, i.Node, myDict, attr, 1)
 			else:
 				if(float(i.choice) == row[attr[rootNode.attName]]):
-					findClass(row, i.Node, myDict, attr)
+					findClass(row, i.Node, myDict, attr, 0)
 
 
 
@@ -91,7 +93,11 @@ def main():
 		flag = 1
 	for row in data:
 		findClass(row, rootNode, answerCollection, attr, flag)
-	print(answerCollection["right"])
+	print("Total records classified: " + str(answerCollection["total"]))
+	print("Total correct classifications: " + str(answerCollection["right"]))
+	print("Total wrong clssifications: " + str(answerCollection["wrong"]))
+	print("Accuracy: " + str(float(answerCollection["right"])/float(answerCollection["total"])))
+	print("Accuracy: " + str(float(answerCollection["wrong"])/float(answerCollection["total"])))
 
 
 
