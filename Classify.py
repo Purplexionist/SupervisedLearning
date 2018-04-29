@@ -45,18 +45,34 @@ def generateTree(rootXML, rootNode):
 		elif(child.tag == 'decision'):
 			rootNode.leaf = Leaf(child.attrib['end'], child.attrib['choice'], child.attrib['choice'])
 
-def findClass(row, rootNode, myDict, attr):
+def findClass(row, rootNode, myDict, attr, flag):
 	if(rootNode.leaf != None):
-		if(float(rootNode.leaf.decision) == float(row[-1])):
-			myDict["total"] = myDict["total"] + 1
-			myDict["right"] = myDict["right"] + 1
+		if(flag == 1):
+			if(float(rootNode.leaf.label) == float(row[-1])):
+				myDict["total"] = myDict["total"] + 1
+				myDict["right"] = myDict["right"] + 1
+			else:
+				myDict["total"] = myDict["total"] + 1
+				myDict["wrong"] = myDict["wrong"] + 1
 		else:
-			myDict["total"] = myDict["total"] + 1
-			myDict["wrong"] = myDict["wrong"] + 1
+			if(float(rootNode.leaf.decision) == float(row[-1])):
+				myDict["total"] = myDict["total"] + 1
+				myDict["right"] = myDict["right"] + 1
+			else:
+				myDict["total"] = myDict["total"] + 1
+				myDict["wrong"] = myDict["wrong"] + 1
 	else:
 		for i in rootNode.edges:
-			if(float(i.choice) == row[attr[rootNode.attName]]):
-				findClass(row, i.Node, myDict, attr)
+			if(flag == 1):
+				if("le" in i.choice):
+					if(float(row[attr[rootNode.attName]]) <= float(i.choice.split(" ")[1])):
+						findClass(row, i.Node, myDict, attr, 1)
+				else:
+					if(float(row[attr[rootNode.attName]]) > float(i.choice.split(" ")[1])):
+						findClass(row, i.Node, myDict, attr, 1)
+			else:
+				if(float(i.choice) == row[attr[rootNode.attName]]):
+					findClass(row, i.Node, myDict, attr)
 
 
 
@@ -70,8 +86,11 @@ def main():
 	answerCollection["total"] = 0
 	answerCollection["wrong"] = 0
 	answerCollection["right"] = 0
+	flag = 0
+	if(sys.argv[1] == "iris.data.txt"):
+		flag = 1
 	for row in data:
-		findClass(row, rootNode, answerCollection, attr)
+		findClass(row, rootNode, answerCollection, attr, flag)
 	print(answerCollection["right"])
 
 
