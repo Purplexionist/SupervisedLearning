@@ -45,6 +45,7 @@ def generateTree(rootXML, rootNode):
 			generateTree(child, tempNode)
 		elif(child.tag == 'decision'):
 			rootNode.leaf = Leaf(child.attrib['choice'], child.attrib['choice'], child.attrib['choice'])
+		print("LOL")
 
 
 def main():
