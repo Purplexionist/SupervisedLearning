@@ -146,25 +146,28 @@ def C45(test, attr, RootNode, classifiers, indent_counter, csv_number_labels):
 				print(indent(indent_counter-1) + "</node>")
 			else:
 				Dv1 = test[test[:, splitNum] <= alpha]
-				if(len(np.unique(Dv1[:, splitNum]) == 1));
+				#print(len(Dv1))
+				if(len(np.unique(Dv1[:, splitNum]) == 1)):
 					Dv1 = np.delete(Dv1, splitNum, axis = 1)
 					curAttr = np.delete(attr, splitNum)
 				tempNode = Node("")
-				#alex print
-				C45(Dv1, curAttr, tempNode, classifiers, indent_counter-1, None)
+				print(indent(indent_counter) + '<edge var = "<= ' + str(alpha) +'">' )
+				C45(Dv1, curAttr, tempNode, classifiers, indent_counter+1, None)
 				print(indent(indent_counter) + "</edge>")
-				newEdge = Edge(alpha, tempNode)
+				newEdge = Edge(-alpha, tempNode)
 				RootNode.edges.append(newEdge)
 				Dv2 = test[test[:, splitNum] > alpha]
-				if(len(np.unique(Dv2[:, splitNum]) == 1));
+				#print(len(Dv2))
+				if(len(np.unique(Dv2[:, splitNum]) == 1)):
 					Dv2 = np.delete(Dv2, splitNum, axis = 1)
 					curAttr2 = np.delete(attr, splitNum)
-				tempNode = Node("")
-				#alex print
-				C45(Dv2, curAttr2, tempNode, classifiers, indent_counter-1, None)
+
+				tempNode2 = Node("")
+				print(indent(indent_counter) + '<edge var = "> ' + str(alpha) +'">' )
+				C45(Dv2, curAttr2, tempNode2, classifiers, indent_counter+1, None)
 				print(indent(indent_counter) + "</edge>")
-				newEdge = Edge(alpha, tempNode)
-				RootNode.edges.append(newEdge)
+				newEdge2 = Edge(alpha, tempNode2)
+				RootNode.edges.append(newEdge2)
 				print(indent(indent_counter-1) + "</node>")
 
 def read_csv_numbers(filepath):
@@ -186,8 +189,8 @@ def read_iris(filepath):
 	file = open(filepath,'r')
 	lines = file.readlines()
 	file.close()
-	attNames = ["sepal_length", "sepal_width", "petal_length", "petal_width", "class"]
-	arr = np.empty((len(lines),len(attNames)),dtype = "float64")
+	attNames = ["sepal_length", "sepal_width", "petal_length", "petal_width"]
+	arr = np.empty((len(lines),len(attNames)+1),dtype = "float64")
 
 	labels = {"Iris-setosa":0.0,"Iris-versicolor":1.0,"Iris-virginica":2.0}
 	classifiers = {0.0:"Iris-setosa",1.0:"Iris-versicolor",2.0:"Iris-virginica"}
