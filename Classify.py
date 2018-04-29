@@ -24,7 +24,6 @@ def read_csv(filepath):
 				temp[4] = 2.0
 			data[i] = temp
 	else:		
-		print(len(lines[0].rstrip().split(","))-2)
 		for i in range(0, len(lines[0].rstrip().split(","))-2):
 			attr[lines[0].rstrip().split(",")[i+1]] = i
 		data = np.empty((len(lines)-3, 11))
@@ -44,8 +43,21 @@ def generateTree(rootXML, rootNode):
 			rootNode.edges.append(Edge(child.attrib['num'], tempNode))
 			generateTree(child, tempNode)
 		elif(child.tag == 'decision'):
-			rootNode.leaf = Leaf(child.attrib['choice'], child.attrib['choice'], child.attrib['choice'])
-		print("LOL")
+			rootNode.leaf = Leaf(child.attrib['end'], child.attrib['choice'], child.attrib['choice'])
+
+def findClass(row, rootNode, myDict, attr):
+	if(rootNode.leaf != None):
+		if(float(rootNode.leaf.decision) == float(row[-1])):
+			myDict["total"] = myDict["total"] + 1
+			myDict["right"] = myDict["right"] + 1
+		else:
+			myDict["total"] = myDict["total"] + 1
+			myDict["wrong"] = myDict["wrong"] + 1
+	else:
+		for i in rootNode.edges:
+			if(float(i.choice) == row[attr[rootNode.attName]]):
+				findClass(row, i.Node, myDict, attr)
+
 
 
 def main():
@@ -54,6 +66,14 @@ def main():
 	root = tree.getroot()
 	rootNode = Node("")
 	generateTree(root, rootNode)
+	answerCollection = {}
+	answerCollection["total"] = 0
+	answerCollection["wrong"] = 0
+	answerCollection["right"] = 0
+	for row in data:
+		findClass(row, rootNode, answerCollection, attr)
+	print(answerCollection["right"])
+
 
 
 class Leaf:
@@ -71,7 +91,7 @@ class Node:
 	def __init__(self, attName):
 		self.edges = []
 		self.attName = attName
-		leaf = None
+		self.leaf = None
 
 if __name__ == "__main__":
 	main()
