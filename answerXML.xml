@@ -1,15 +1,55 @@
 <Tree name = "test">
-	<node var = "petal_length">
-		<edge num = "le 1.9">
-			<decision end = "Iris-setosa" choice = "0.0" p = "1.00"/>
-		</edge>
-		<edge num = "g 1.9">
-			<node var = "petal_width">
-				<edge num = "le 1.7">
-					<decision end = "Iris-versicolor" choice = "1.0" p = "0.9074074074074074"/>
+	<node var = "Bush Approval">
+		<edge var = "Approve" num="1">
+			<node var = "Political Party">
+				<edge var = "Democratic" num="1">
+					<decision end = "2" choice = "McCain" p = "1.00"/>
 				</edge>
-				<edge num = "g 1.7">
-					<decision end = "Iris-virginica" choice = "2.0" p = "0.9782608695652174"/>
+				<edge var = "Independent" num="3">
+					<node var = "Ideology">
+						<edge var = "Conservative" num="3">
+							<decision end = "2" choice = "McCain" p = "1.00"/>
+						</edge>
+						<edge var = "Liberal" num="1">
+							<decision end = "1" choice = "Obama" p = "1.00"/>
+						</edge>
+						<edge var = "Moderate" num="2">
+							<decision end = "2" choice = "McCain" p = "1.00"/>
+						</edge>
+					</node>
+				</edge>
+				<edge var = "Republican" num="2">
+					<decision end = "2" choice = "McCain" p = "1.00"/>
+				</edge>
+			</node>
+		</edge>
+		<edge var = "Disapprove" num="2">
+			<node var = "Political Party">
+				<edge var = "Democratic" num="1">
+					<decision end = "1" choice = "Obama" p = "1.00"/>
+				</edge>
+				<edge var = "Independent" num="3">
+					<node var = "Ideology">
+						<edge var = "Conservative" num="3">
+							<decision end = "2" choice = "McCain" p = "1.00"/>
+						</edge>
+						<edge var = "Liberal" num="1">
+							<decision end = "1" choice = "Obama" p = "1.00"/>
+						</edge>
+						<edge var = "Moderate" num="2">
+							<decision end = "1" choice = "Obama" p = "1.00"/>
+						</edge>
+					</node>
+				</edge>
+				<edge var = "Republican" num="2">
+					<node var = "Gender">
+						<edge var = "Female" num="2">
+							<decision end = "1" choice = "Obama" p = "1.00"/>
+						</edge>
+						<edge var = "Male" num="1">
+							<decision end = "2" choice = "McCain" p = "1.00"/>
+						</edge>
+					</node>
 				</edge>
 			</node>
 		</edge>
