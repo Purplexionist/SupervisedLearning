@@ -38,7 +38,7 @@ def read_iris(filepath):
 		arr[i] = [sl,sw,pl,pw,iris]
 	return arr,attNames,classifiers
 
-
+# py Validation.py data thresh ratio_flag n [restriction]
 def main():
 	indent_counter = 0
 	indent_counter += 1
