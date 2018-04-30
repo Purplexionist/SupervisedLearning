@@ -45,7 +45,7 @@ def main():
 
 	#flag indicating this is numerical data; i.e iris dataset
 	if sys.argv[1] == "iris.data.txt":
-		labeled_data,attr,classifiers = read_iris(sys.argv[1])
+		test,attr,classifiers = read_iris(sys.argv[1])
 		csv_number_labels = None
 	#else, this program can read any categorical numbers csv file
 	else:
@@ -55,7 +55,6 @@ def main():
 
 		for i in classes:
 			classifiers[int(i)] = str(i)
-	print(classifiers)
 
 	RootNode = Node("")
 	
