@@ -97,7 +97,7 @@ def main():
 	print("Total correct classifications: " + str(answerCollection["right"]))
 	print("Total wrong clssifications: " + str(answerCollection["wrong"]))
 	print("Accuracy: " + str(float(answerCollection["right"])/float(answerCollection["total"])))
-	print("Accuracy: " + str(float(answerCollection["wrong"])/float(answerCollection["total"])))
+	print("Error: " + str(float(answerCollection["wrong"])/float(answerCollection["total"])))
 
 
 
