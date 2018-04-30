@@ -8,7 +8,7 @@ def main():
 	indent_counter += 1
 
 	#flag indicating this is numerical data; i.e iris dataset
-	if sys.argv[1] == "NULL":
+	if sys.argv[1] == "iris.data.txt":
 		labeled_data,attr,classifiers = read_iris(sys.argv[2])
 		csv_number_labels = None
 	#else, this program can read any categorical numbers csv file
