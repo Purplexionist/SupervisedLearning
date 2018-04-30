@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 import sys
 
 #run program with this:
-#	python InduceC45.py <domainFile.xml> <TrainingSetFile.csv> <threshold_float> [<restrictionsFile>]
+#	python InduceC45.py <domainFile.xml> <TrainingSetFile.csv> <threshold_float> <gain_ratio_flag> [<restrictionsFile>]
  
 	
 
