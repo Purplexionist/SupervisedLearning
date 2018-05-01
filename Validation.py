@@ -315,8 +315,6 @@ def main():
 		answerCollection["right"] = 0
 		for row in testRows:
 			findClass(row,tree,answerCollection,attr,isNumeric,labels,confusion_matrix)
-			
-
 		averages.append(answerCollection)
 
 	if isNumeric == 0:
@@ -337,7 +335,22 @@ def main():
 	precision = tp/(tp+fp)
 	pf = fp/(fp+tn)
 	f = (2*precision*recall)/(precision+recall)
-	print(accuracy)
+	print("Recall: "+str(recall))
+	print("Precision: "+str(precision))
+	print("pf: "+str(pf))
+	print("f-measure: "+str(f))
+	print("Overall Accuracy: "+str(accuracy))
+	print("Overall Error: "+str(1-accuracy))
+	totCorrect = 0
+	tot = 0
+	avg = 0
+	for i in averages:
+		print(i)
+		totCorrect += i["right"]
+		tot += i["total"]
+		avg += totCorrect/tot
+	print("Average accuracy: "+str(avg/len(averages)))
+	print("Average error: "+str(1-avg/len(averages)))
 
 	
 
