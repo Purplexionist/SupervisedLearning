@@ -286,7 +286,7 @@ class Node:
 	def __init__(self, attName):
 		self.edges = []
 		self.attName = attName
-		leaf = None
+		self.leaf = None
 		
 
 if __name__ == "__main__":

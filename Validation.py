@@ -20,6 +20,9 @@ def read_csv_numbers(filepath):
 
 	return(arr,attNames[0:-1])
 
+
+
+
 def selectSplitting(attr, data, thresh, isNumeric):
 	dEntropy = findEntropy(data)
 	#print(dEntropy)
@@ -185,7 +188,7 @@ def read_iris(filepath):
 		arr[i] = [sl,sw,pl,pw,iris]
 	return arr,attNames,classifiers
 
-def findClass(row, rootNode, attr, flag):
+def findClass(row, rootNode, myDict, attr, flag):
 	if(rootNode.leaf != None):
 		if(flag == 1):
 			if(float(rootNode.leaf.label) == float(row[-1])):
@@ -193,8 +196,8 @@ def findClass(row, rootNode, attr, flag):
 				myDict["right"] = myDict["right"] + 1
 			else:
 				myDict["total"] = myDict["total"] + 1
-				myDict["wrong"] = myDict["wrong"] + 1
-			print("Row:",str(row[0:-1]), ", Predicted:",rootNode.leaf.label)
+				myDict["wrong"] = myDict["wrong"] + 1	
+			#print("Row:",str(row[0:-1]), ", Predicted:",rootNode.leaf.label)
 		else:
 			if(float(rootNode.leaf.decision) == float(row[-1])):
 				myDict["total"] = myDict["total"] + 1
@@ -202,15 +205,16 @@ def findClass(row, rootNode, attr, flag):
 			else:
 				myDict["total"] = myDict["total"] + 1
 				myDict["wrong"] = myDict["wrong"] + 1
-			print("Row:",str(row[0:-1]), ", Predicted:",rootNode.leaf.label)
+			#print("Row:",str(row[0:-1]), ", Predicted:",rootNode.leaf.label)
+		return(int(row[-1]),int(rootNode.leaf.label))
 	else:
 		for i in rootNode.edges:
 			if(flag == 1):
-				if("le" in i.choice):
-					if(float(row[attr[rootNode.attName]]) <= float(i.choice.split(" ")[1])):
+				if(i.choice < 0):
+					if(float(row[attr[rootNode.attName]]) <= abs(i.choice)):
 						findClass(row, i.Node, myDict, attr, 1)
 				else:
-					if(float(row[attr[rootNode.attName]]) > float(i.choice.split(" ")[1])):
+					if(float(row[attr[rootNode.attName]]) > abs(i.choice)):
 						findClass(row, i.Node, myDict, attr, 1)
 			else:
 				if(float(i.choice) == row[attr[rootNode.attName]]):
@@ -246,6 +250,7 @@ def main():
 
 	except:
 		print("No restrictions file found/inputted")
+	
 
 	np.random.shuffle(train)
 	trees = []
@@ -276,13 +281,21 @@ def main():
 			C45(curTrain, attr, RootNode, classifiers,isNumeric)
 			trees.append(RootNode)
 
-
 	confusion_matrix = np.zeros((len(classifiers),len(classifiers)), dtype = 'int64')
+	averages = []
 
+	for i in range(len(testData)):
+		tree = trees[i]
+		testRows = testData[i]
+		answerCollection = {}
+		answerCollection["total"] = 0
+		answerCollection["wrong"] = 0
+		answerCollection["right"] = 0
+		for row in testRows:
+			print(findClass(row,tree,answerCollection,attr,isNumeric))
 
-	for tree in trees:
-		print(tree.attName)
-	print(len(classifiers))
+	
+
 	
 
 class Leaf:
@@ -300,7 +313,7 @@ class Node:
 	def __init__(self, attName):
 		self.edges = []
 		self.attName = attName
-		leaf = None
+		self.leaf = None
 		
 
 if __name__ == "__main__":
