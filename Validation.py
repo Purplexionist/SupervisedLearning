@@ -206,18 +206,18 @@ def findClass(row, rootNode, myDict, attr, flag):
 				myDict["total"] = myDict["total"] + 1
 				myDict["wrong"] = myDict["wrong"] + 1
 			#print("Row:",str(row[0:-1]), ", Predicted:",rootNode.leaf.label)
-		return(int(row[-1]),int(rootNode.leaf.label))
+		
 	else:
 		for i in rootNode.edges:
 			if(flag == 1):
 				if(i.choice < 0):
-					if(float(row[attr[rootNode.attName]]) <= abs(i.choice)):
+					if(float(row[attr.index(rootNode.attName)]) <= abs(i.choice)):
 						findClass(row, i.Node, myDict, attr, 1)
 				else:
-					if(float(row[attr[rootNode.attName]]) > abs(i.choice)):
+					if(float(row[attr.index(rootNode.attName)]) > abs(i.choice)):
 						findClass(row, i.Node, myDict, attr, 1)
 			else:
-				if(float(i.choice) == row[attr[rootNode.attName]]):
+				if(float(i.choice) == row[attr.index(rootNode.attName)]):
 					findClass(row, i.Node, myDict, attr, 0)
 
 
@@ -292,9 +292,10 @@ def main():
 		answerCollection["wrong"] = 0
 		answerCollection["right"] = 0
 		for row in testRows:
-			print(findClass(row,tree,answerCollection,attr,isNumeric))
+			findClass(row,tree,answerCollection,attr,isNumeric)
 
-	
+		averages.append(answerCollection)
+		print(answerCollection)
 
 	
 
