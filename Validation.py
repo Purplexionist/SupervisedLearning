@@ -185,6 +185,38 @@ def read_iris(filepath):
 		arr[i] = [sl,sw,pl,pw,iris]
 	return arr,attNames,classifiers
 
+def findClass(row, rootNode, attr, flag):
+	if(rootNode.leaf != None):
+		if(flag == 1):
+			if(float(rootNode.leaf.label) == float(row[-1])):
+				myDict["total"] = myDict["total"] + 1
+				myDict["right"] = myDict["right"] + 1
+			else:
+				myDict["total"] = myDict["total"] + 1
+				myDict["wrong"] = myDict["wrong"] + 1
+			print("Row:",str(row[0:-1]), ", Predicted:",rootNode.leaf.label)
+		else:
+			if(float(rootNode.leaf.decision) == float(row[-1])):
+				myDict["total"] = myDict["total"] + 1
+				myDict["right"] = myDict["right"] + 1
+			else:
+				myDict["total"] = myDict["total"] + 1
+				myDict["wrong"] = myDict["wrong"] + 1
+			print("Row:",str(row[0:-1]), ", Predicted:",rootNode.leaf.label)
+	else:
+		for i in rootNode.edges:
+			if(flag == 1):
+				if("le" in i.choice):
+					if(float(row[attr[rootNode.attName]]) <= float(i.choice.split(" ")[1])):
+						findClass(row, i.Node, myDict, attr, 1)
+				else:
+					if(float(row[attr[rootNode.attName]]) > float(i.choice.split(" ")[1])):
+						findClass(row, i.Node, myDict, attr, 1)
+			else:
+				if(float(i.choice) == row[attr[rootNode.attName]]):
+					findClass(row, i.Node, myDict, attr, 0)
+
+
 def main():
 	
 	isNumeric = 0
