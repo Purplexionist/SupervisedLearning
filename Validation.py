@@ -243,9 +243,13 @@ def main():
 			RootNode = Node("")
 			C45(curTrain, attr, RootNode, classifiers,isNumeric)
 			trees.append(RootNode)
+
+
+	confusion_matrix = np.zeros((len(classifiers),len(classifiers)))
+
 	for tree in trees:
 		print(tree.attName)
-	#csv_number_labels is null for numeric
+	print(len(classifiers))
 	
 
 class Leaf:
