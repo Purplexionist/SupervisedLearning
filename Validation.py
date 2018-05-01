@@ -245,7 +245,8 @@ def main():
 			trees.append(RootNode)
 
 
-	confusion_matrix = np.zeros((len(classifiers),len(classifiers)))
+	confusion_matrix = np.zeros((len(classifiers),len(classifiers)), dtype = 'int64')
+
 
 	for tree in trees:
 		print(tree.attName)
