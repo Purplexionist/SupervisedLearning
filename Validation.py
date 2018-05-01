@@ -320,7 +320,7 @@ def main():
 		averages.append(answerCollection)
 
 	if isNumeric == 0:
-		save1 = answerCollection[0][0]
+		save1 = confusion_matrix[0][0]
 		confusion_matrix[0][0] = confusion_matrix[1][1]
 		confusion_matrix[1][1] = save1
 		save1 = confusion_matrix[1][0]
@@ -329,6 +329,15 @@ def main():
 		
 	print(confusion_matrix)
 	tp = true_positive(confusion_matrix)	
+	fp = confusion_matrix[0][1]
+	fn = confusion_matrix[1][0]
+	tn = confusion_matrix[0][0]
+	accuracy = (tn+tp)/(tn+tp+fn+fp)
+	recall = tp/(tp+fn)
+	precision = tp/(tp+fp)
+	pf = fp/(fp+tn)
+	f = (2*precision*recall)/(precision+recall)
+	print(accuracy)
 
 	
 
