@@ -45,12 +45,11 @@ def main():
 
 	#flag indicating this is numerical data; i.e iris dataset
 	if sys.argv[1] == "iris.data.txt":
-		test,attr,classifiers = read_iris(sys.argv[1])
-		csv_number_labels = None
+		train,attr,classifiers = read_iris(sys.argv[1])
 	#else, this program can read any categorical numbers csv file
 	else:
-		test,attr = read_csv_numbers(sys.argv[1])
-		classes = np.unique(test[:,-1])
+		train,attr = read_csv_numbers(sys.argv[1])
+		classes = np.unique(train[:,-1])
 		classifiers = {}
 
 		for i in classes:
@@ -64,13 +63,13 @@ def main():
 		for i in range(len(restrictions)-1,-1,-1):
 			print(i)
 			if restrictions[i] == '0':
-				labeled_data = np.delete(labeled_data,i,axis=1)
+				train = np.delete(train,i,axis=1)
 				attr = np.delete(attr,i)
 
 	except:
 		print("No restrictions file found/inputted")
 
-	np.random.shuffle(test)
+	np.random.shuffle(train)
 	trees = []
 	
 	if(n == 0):
@@ -81,7 +80,7 @@ def main():
 
 		splitNum = len(data)//n
 		for i in range(0, n):
-			testData = data[i * splitNum, ] 
+			trainData = data[i * splitNum, ] 
 
 	#csv_number_labels is null for numeric
 	#C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels, f2)
