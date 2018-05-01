@@ -225,7 +225,10 @@ def findClass(row, rootNode, myDict, attr, flag, labels, conf):
 
 
 def false_positive(conf):
-	x=1
+	sum = 0
+	for i in range(len(conf)):
+		for j in range(len(conf)):
+			sum += conf[i,j]
 
 def false_negative(conf):
 	x=1
@@ -318,7 +321,7 @@ def main():
 	
 	print(confusion_matrix)
 	tp = true_positive(confusion_matrix)	
-	print(tp)
+
 	
 
 class Leaf:
