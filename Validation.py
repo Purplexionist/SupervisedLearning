@@ -219,10 +219,14 @@ def main():
 	trees = []
 	testData = []
 	k = int(sys.argv[4])
-	if(k == 0):
-		z = 1
-	elif(k == -1):
-		z = 1
+	if(k == -1):
+		k = len(train)
+	if(k == 0 or k == 1):
+		RootNode = Node("")
+		curTrain = train
+		C45(curTrain, attr, RootNode, classifiers, isNumeric)
+		testData.append(train)
+		trees.append(RootNode)
 	else:
 		lengthLeft = len(train)
 		cumSum = 0
@@ -239,7 +243,6 @@ def main():
 			RootNode = Node("")
 			C45(curTrain, attr, RootNode, classifiers,isNumeric)
 			trees.append(RootNode)
-
 	for tree in trees:
 		print(tree.attName)
 	#csv_number_labels is null for numeric
