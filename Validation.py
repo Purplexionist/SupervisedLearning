@@ -303,8 +303,14 @@ def main():
 			
 
 		averages.append(answerCollection)
-		print(answerCollection)
-		print(confusion_matrix)
+
+	if isNumeric == 0:
+		save1 = answerCollection[0][0]
+		answerCollection[0][0] = answerCollection[1][1]
+		answerCollection[1][1] = save1
+		save1 = answerCollection[1][0]
+		answerCollection[1][0] = answerCollection[0][1]
+		answerCollection[0][1] = save1
 
 	
 
