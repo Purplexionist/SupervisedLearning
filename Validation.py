@@ -316,6 +316,14 @@ def main():
 
 		averages.append(answerCollection)
 
+	if isNumeric == 0:
+		save1 = answerCollection[0][0]
+		answerCollection[0][0] = answerCollection[1][1]
+		answerCollection[1][1] = save1
+		save1 = answerCollection[1][0]
+		answerCollection[1][0] = answerCollection[0][1]
+		answerCollection[0][1] = save1
+		
 	print(confusion_matrix)
 	tp = true_positive(confusion_matrix)	
 	print(tp)
