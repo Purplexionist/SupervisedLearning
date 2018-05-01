@@ -26,7 +26,7 @@ def read_csv(filepath):
 	else:		
 		for i in range(0, len(lines[0].rstrip().split(","))-2):
 			attr[lines[0].rstrip().split(",")[i+1]] = i
-		data = np.empty((len(lines)-3, 11))
+		data = np.empty((len(lines)-3, len(attr) + 1))
 		for i in range(len(lines) - 3):
 			data[i] = lines[3+i].rstrip().split(",")[1:]
 	
