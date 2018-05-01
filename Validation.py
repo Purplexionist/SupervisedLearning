@@ -71,16 +71,27 @@ def main():
 
 	np.random.shuffle(train)
 	trees = []
-	
-	if(n == 0):
-		#write later
-	elif(n == -1):
-		#write later
+	testData = []
+	k = int(sys.argv[4])
+	if(k == 0):
+		z = 1
+	elif(k == -1):
+		z = 1
 	else:
+		lengthLeft = len(train)
+		cumSum = 0
+		foldsLeft = k
+		n = len(train)
+		for i in range(0, k):
+			start = cumSum
+			end = cumSum + lengthLeft//foldsLeft
+			cumSum += lengthLeft//foldsLeft
+			lengthLeft -= lengthLeft//foldsLeft
+			foldsLeft -= 1
+			testData.append(train[start : end])
+			curTrain = np.append(train[0 : start], train[end : n], 0)
+			RootNode = Node("")
 
-		splitNum = len(data)//n
-		for i in range(0, n):
-			trainData = data[i * splitNum, ] 
 
 	#csv_number_labels is null for numeric
 	#C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels, f2)
