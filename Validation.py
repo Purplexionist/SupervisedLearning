@@ -224,9 +224,21 @@ def findClass(row, rootNode, myDict, attr, flag, labels, conf):
 					findClass(row, i.Node, myDict, attr, 0,labels,conf)
 
 
+def false_positive(conf):
+	x=1
 
+def false_negative(conf):
+	x=1
 
+def true_positive(conf):
+	sum = 0
+	for i in range(len(conf)):
+		sum += conf[i,i]
+	return(sum)
+				
 
+def true_negative(conf):
+	x=1
 
 def main():
 	
@@ -304,13 +316,9 @@ def main():
 
 		averages.append(answerCollection)
 
-	if isNumeric == 0:
-		save1 = answerCollection[0][0]
-		answerCollection[0][0] = answerCollection[1][1]
-		answerCollection[1][1] = save1
-		save1 = answerCollection[1][0]
-		answerCollection[1][0] = answerCollection[0][1]
-		answerCollection[0][1] = save1
+	print(confusion_matrix)
+	tp = true_positive(confusion_matrix)	
+	print(tp)
 
 	
 
