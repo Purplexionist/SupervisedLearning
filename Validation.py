@@ -70,6 +70,19 @@ def main():
 	except:
 		print("No restrictions file found/inputted")
 
+	np.random.shuffle(test)
+	trees = []
+	
+	if(n == 0):
+		#write later
+	elif(n == -1):
+		#write later
+	else:
+
+		splitNum = len(data)//n
+		for i in range(0, n):
+			testData = data[i * splitNum, ] 
+
 	#csv_number_labels is null for numeric
 	#C45(labeled_data, attr, RootNode, classifiers, indent_counter,csv_number_labels, f2)
 
