@@ -186,9 +186,9 @@ def read_iris(filepath):
 		pw = float(line[3])
 		iris = float(labels[line[4]])
 		arr[i] = [sl,sw,pl,pw,iris]
-	return arr,attNames,classifiers
+	return arr,attNames,classifiers,labels
 
-def findClass(row, rootNode, myDict, attr, flag):
+def findClass(row, rootNode, myDict, attr, flag, labels, conf):
 	if(rootNode.leaf != None):
 		if(flag == 1):
 			if(float(rootNode.leaf.label) == float(row[-1])):
@@ -206,19 +206,26 @@ def findClass(row, rootNode, myDict, attr, flag):
 				myDict["total"] = myDict["total"] + 1
 				myDict["wrong"] = myDict["wrong"] + 1
 			#print("Row:",str(row[0:-1]), ", Predicted:",rootNode.leaf.label)
-		
+		if flag != 1:
+			conf[int(row[-1]) - 1, int(labels[rootNode.leaf.decision]) - 1] += 1
+		else:
+			conf[int(row[-1]), int(labels[rootNode.leaf.decision])] += 1
 	else:
 		for i in rootNode.edges:
 			if(flag == 1):
 				if(i.choice < 0):
 					if(float(row[attr.index(rootNode.attName)]) <= abs(i.choice)):
-						findClass(row, i.Node, myDict, attr, 1)
+						findClass(row, i.Node, myDict, attr, 1,labels,conf)
 				else:
 					if(float(row[attr.index(rootNode.attName)]) > abs(i.choice)):
-						findClass(row, i.Node, myDict, attr, 1)
+						findClass(row, i.Node, myDict, attr, 1,labels,conf)
 			else:
 				if(float(i.choice) == row[attr.index(rootNode.attName)]):
-					findClass(row, i.Node, myDict, attr, 0)
+					findClass(row, i.Node, myDict, attr, 0,labels,conf)
+
+
+
+
 
 
 def main():
@@ -227,15 +234,17 @@ def main():
 	#flag indicating this is numerical data; i.e iris dataset
 	if "iris" in sys.argv[1]:
 		isNumeric = 1
-		train,attr,classifiers = read_iris(sys.argv[1])
+		train,attr,classifiers,labels = read_iris(sys.argv[1])
 	#else, this program can read any categorical numbers csv file
 	else:
 		train,attr = read_csv_numbers(sys.argv[1])
 		classes = np.unique(train[:,-1])
 		classifiers = {}
+		labels = {}
 
 		for i in classes:
 			classifiers[int(i)] = str(i)
+			labels[str(i)] = int(i)
 
 	RootNode = Node("")
 	
@@ -243,14 +252,12 @@ def main():
 		restrictionsFile = open(sys.argv[5])
 		restrictions = restrictionsFile.readlines()[0].split(",")[1:]
 		for i in range(len(restrictions)-1,-1,-1):
-			print(i)
 			if restrictions[i] == '0':
 				train = np.delete(train,i,axis=1)
 				attr = np.delete(attr,i)
 
 	except:
 		print("No restrictions file found/inputted")
-	
 
 	np.random.shuffle(train)
 	trees = []
@@ -292,10 +299,12 @@ def main():
 		answerCollection["wrong"] = 0
 		answerCollection["right"] = 0
 		for row in testRows:
-			findClass(row,tree,answerCollection,attr,isNumeric)
+			findClass(row,tree,answerCollection,attr,isNumeric,labels,confusion_matrix)
+			
 
 		averages.append(answerCollection)
 		print(answerCollection)
+		print(confusion_matrix)
 
 	
 
