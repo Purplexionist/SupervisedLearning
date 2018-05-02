@@ -1,0 +1,67 @@
+README
+
+CPE 466 - Dr. Dekhtyar
+Lab 2 - Aleksander Braksator, Will Eggert
+
+
+For starters, we saved the iris dataset as "iris.data.txt". It is mandatory that you do the same when testing the code. You can use iris.data.txt in place of TrainingSetFile.csv
+
+InduceC45.py:
+	
+	To run InduceC45 with the ELECTIONS dataset, run this command in the working directory:
+
+		python InduceC45.py <domain.xml> <TrainingSetFile.csv> <threshold_float> <gain_ratio_flag> [<restrictionsFile>]
+
+		domain.xml - the provided domain file
+		TrainingSetFile.csv - election dataset used to induce tree
+		threshold_float - float for enthropy threshold when selecting attributes
+		gain_ratio_flag - 0 if using gain, 1 if using gain_ratio to determine selected attribute
+		restrictionsFile - a one-line csv file of 0s and 1s, determining which attributes to construct the tree with
+
+	To run InduceC45 with the Iris dataset, run this command in the working directory:
+
+		python InduceC45.py NULL <TrainingSetFile.csv> <threshold_float> <gain_ratio_flag> [<restrictionsFile>]
+
+		Command remains the same, however replace domain.xml argument with NULL, since there was no such file given to us.
+
+	Output: This will produce a decision tree saved in answerXML.xml which is to be used in Classify.py.
+
+Classify.py
+
+	To run Classify with the ELECTIONS dataset or the Iris dataset, run this command in the working directory:
+
+	python Classify.py <TrainingSetFile.csv> <answerXML.xml>
+
+	TrainingSetFile.csv - filename of dataset you wish to classify
+	answerXML.xml - this is the decision tree in XML format produced by Induce45.py
+
+Validation.py 
+
+	To run Validation with the ELECTIONS dataset or the Iris dataset, run this command in the working directory:
+
+	python Validation.py <TrainingSetFile.csv> <threshold_float> 
+	<gain_ratio_flag> <number_of_folds> [<restrictionsFile>]
+
+	TrainingSetFile.csv - filename of dataset you wish to classify
+	threshold_float - float for enthropy threshold when selecting attributes
+	gain_ratio_flag - 0 if using gain, 1 if using gain_ratio to determine selected attribute
+	number_of_folds - -1 for all-but-one folds, 0 or 1 if full dataset 
+					  is being used for training and testing, any other positive number less than the length of data for number of folds
+	restrictionsFile - a one-line csv file of 0s and 1s, determining which attributes to construct the tree with
+
+randomForest.py
+	
+	To run randomForest with the ELECTIONS dataset or the Iris dataset,
+	run this command in the working directory:
+
+	python randomForest.py <dataset.csv> <threshold_float> <gain_ratio_flag> <n> <m> <k> <N> [restrictionsFile.csv]
+
+	dataset.csv - filename of dataset to classify with random forest
+	threshold_float - float for enthropy threshold when selecting attributes
+	gain_ratio_flag - 0 if using gain, 1 if using gain_ratio to determine selected attribute
+	n - Use -1 for all-but-one folds, 0 or 1 if full dataset 
+		is being used for training and testing, any other positive number less than the length of data for number of folds
+	m - number of random attributes to choose from when constructing each tree in the forest
+	k - number of data points selected randomly with replacement to form a dataset for each decision tree
+	N - number of decision trees to build
+	restrictionsFile - a one-line csv file of 0s and 1s, determining which attributes to construct the tree with
