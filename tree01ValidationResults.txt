@@ -1,0 +1,12 @@
+No restrictions file found/inputted
+McCain Obama
+[[ 66   7]
+ [ 11 911]]
+Recall: 0.9888663967611336
+Precision: 0.9928861788617886
+pf: 0.0958904109589041
+f-measure: 0.9908722109533468
+Overall Accuracy: 0.9830348727615457
+Overall Error: 0.016965127238454336
+Average accuracy: 0.9777859658311012
+Average error: 0.022214034168898777
