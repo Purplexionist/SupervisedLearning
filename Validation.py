@@ -326,7 +326,7 @@ def main():
 	if isNumeric == 0:
 		print("McCain Obama")
 	else:
-		print("Iris-setoa Iris-versicolor Iris-virginica")
+		print("Iris-setosa Iris-versicolor Iris-virginica")
 	print(confusion_matrix)
 	if isNumeric == 0:
 		tp = true_positive(confusion_matrix)	
