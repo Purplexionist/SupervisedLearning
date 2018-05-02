@@ -95,7 +95,7 @@ def main():
 		findClass(row, rootNode, answerCollection, attr, flag)
 	print("Total records classified: " + str(answerCollection["total"]))
 	print("Total correct classifications: " + str(answerCollection["right"]))
-	print("Total wrong clssifications: " + str(answerCollection["wrong"]))
+	print("Total wrong classifications: " + str(answerCollection["wrong"]))
 	print("Accuracy: " + str(float(answerCollection["right"])/float(answerCollection["total"])))
 	print("Error: " + str(float(answerCollection["wrong"])/float(answerCollection["total"])))
 
