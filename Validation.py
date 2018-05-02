@@ -269,11 +269,10 @@ def main():
 		for i in range(len(restrictions)-1,-1,-1):
 			if restrictions[i] == '0':
 				train = np.delete(train,i,axis=1)
-				attr = np.delete(attr,i)
+				del attr[i]
 
 	except:
 		print("No restrictions file found/inputted")
-
 	np.random.shuffle(train)
 	trees = []
 	testData = []
