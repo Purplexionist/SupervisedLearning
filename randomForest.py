@@ -331,6 +331,8 @@ def main():
 			label = []
 			for miniTree in tree:
 				findClass(row,miniTree,answerCollection,attr,isNumeric,labels, label)
+			if(len(label) == 0):
+				continue
 			most =int(float(max(set(label), key = label.count)))
 			real = int(row[-1])
 			if isNumeric == 0:
