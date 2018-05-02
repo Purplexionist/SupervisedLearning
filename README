@@ -4,7 +4,8 @@ CPE 466 - Dr. Dekhtyar
 Lab 2 - Aleksander Braksator, Will Eggert
 
 
-For starters, we saved the iris dataset as "iris.data.txt". It is mandatory that you do the same when testing the code. You can use iris.data.txt in place of TrainingSetFile.csv
+For starters, we saved the iris dataset as "iris.data.txt". It is mandatory that you do the same when testing the code. 
+You can use iris.data.txt in place of TrainingSetFile.csv
 
 InduceC45.py:
 	
