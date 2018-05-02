@@ -8,7 +8,7 @@ def read_csv(filepath):
 	lines = file.readlines()
 	file.close()
 	attr = {}
-	if(filepath == "iris.data.txt"):
+	if "iris" in filepath:
 		attr["sepal_length"] = 0
 		attr["sepal_width"] = 1
 		attr["petal_length"] = 2
@@ -89,7 +89,7 @@ def main():
 	answerCollection["wrong"] = 0
 	answerCollection["right"] = 0
 	flag = 0
-	if(sys.argv[1] == "iris.data.txt"):
+	if("iris" in sys.argv[1]):
 		flag = 1
 	for row in data:
 		findClass(row, rootNode, answerCollection, attr, flag)
