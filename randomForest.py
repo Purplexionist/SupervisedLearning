@@ -333,7 +333,6 @@ def main():
 				findClass(row,miniTree,answerCollection,attr,isNumeric,labels, label)
 			most =int(float(max(set(label), key = label.count)))
 			real = int(row[-1])
-			print(most)
 			if isNumeric == 0:
 				confusion_matrix[real-1][most-1] += 1
 			else:
@@ -344,7 +343,7 @@ def main():
 				answerCollection["wrong"] += 1
 			answerCollection["total"] += 1
 		averages.append(answerCollection)
-	print(confusion_matrix)
+
 	if isNumeric == 0:
 		save1 = confusion_matrix[0][0]
 		confusion_matrix[0][0] = confusion_matrix[1][1]
@@ -352,7 +351,10 @@ def main():
 		save1 = confusion_matrix[1][0]
 		confusion_matrix[1][0] = confusion_matrix[0][1]
 		confusion_matrix[0][1] = save1
-		
+	if isNumeric == 0:
+		print("McCain Obama")
+	else:
+		print("Iris-setoa Iris-versicolor Iris-virginica")
 	print(confusion_matrix)
 	if isNumeric == 0:
 		tp = true_positive(confusion_matrix)	
@@ -381,7 +383,6 @@ def main():
 	tot = 0
 	avg = 0
 	for i in averages:
-		print(i)
 		totCorrect += i["right"]
 		tot += i["total"]
 		avg += totCorrect/tot
